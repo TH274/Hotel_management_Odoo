@@ -86,6 +86,7 @@
             eval="[Command.clear(),
                                  (0,0,{'view_mode':'tree','view_id':ref('view_hotel_customer_tree')}),
                                  (0,0,{'view_mode':'form','view_id':ref('view_hotel_customer_form')})]" />
+        <field name="search_view_id" ref="view_hotel_customer_search"/>
         <field name="help" type="html">
             <p class="a_view_nocontent_selling_face">
                 Create a new customer
