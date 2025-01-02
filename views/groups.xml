@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Hotel Manager Group -->
+    <record id="group_hotel_manager" model="res.groups">
+        <field name="name">Hotel Manager</field>
+        <field name="category_id"/>
+    </record>
+
+    <!-- Hotel User Group -->
+    <record id="group_hotel_user" model="res.groups">
+        <field name="name">Hotel User</field>
+        <field name="category_id"/>
+    </record>
+</odoo>

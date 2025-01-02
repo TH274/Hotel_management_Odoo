@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hotel_room_form" model="ir.ui.view">
+        <field name="name">room.form</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <form string="Room Form">
+                <field name="status" widget="statusbar"
+                    statusbar_visible="draft,available,reserved,occupied" />
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="room_number" />
+                            <field name="room_type" />
+                            <field name="capacity" />
+                        </group>
+                        <group>
+                            <field name="price" />
+                            <field name="status" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Customer">
+                            <field name="reservation_ids">
+                                <tree>
+                                    <field name="guest_name" />
+                                    <field name="check_in_date" />
+                                    <field name="check_out_date" />
+                                    <field name="total_amount" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="other_info" string="Other Info">
+                            <group>
+                                <field name="notes" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"
+                        groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotel_room_tree" model="ir.ui.view">
+        <field name="name">room.tree</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <tree string="Room List">
+                <field name="room_number" />
+                <field name="room_type" optional="show" />
+                <field name="capacity" optional="hide" />
+                <field name="price" />
+                <field name="status" optional="show" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hotel_room_kanban" model="ir.ui.view">
+        <field name="name">room.kanban</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <kanban string="Room List">
+                <field name="id" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="o_kanban_card o_kanban_card_border oe_kanban_global_click">
+                            <div class="o_kanban_primary o_kanban_header">
+                                <div class="o_kanban_title">
+                                    <span class="fa fa-door-open"
+                                        style="margin-right: 8px; color: #007bff;"></span>
+                                    <strong>
+                                        <field name="room_number" />
+                                    </strong>
+                                </div>
+                                <div class="o_kanban_secondary_status">
+                                    <span class="badge"
+                                        t-att-class="'badge-' + (record.status.raw_value === 'available' ? 'success' : record.status.raw_value === 'reserved' ? 'warning' : 'danger')">
+                                        <field name="status" />
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="o_kanban_details">
+                                <div class="o_kanban_item">
+                                    <span class="fa fa-bed"
+                                        style="margin-right: 5px; color: #6c757d;"></span>
+                                    <strong>Type:</strong>
+                                    <field name="room_type" />
+                                </div>
+                                <div class="o_kanban_item">
+                                    <span class="fa fa-users"
+                                        style="margin-right: 5px; color: #6c757d;"></span>
+                                    <strong>Capacity:</strong>
+                                    <field name="capacity" />
+                                </div>
+                                <div class="o_kanban_item">
+                                    <span class="fa fa-tag"
+                                        style="margin-right: 5px; color: #6c757d;"></span>
+                                    <strong>Price: </strong>
+                                    <field name="price" widget="monetary"
+                                        options="{'currency_field': 'currency_id'}" />
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_hotel_room_search" model="ir.ui.view">
+        <field name="name">room.search</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <search string="Search Rooms">
+                <filter name="available" string="Available"
+                    domain="[('status', '=', 'available')]" />
+                <filter name="reserved" string="Reserved"
+                    domain="[('status', '=', 'reserved')]" />
+                <filter name="occupied" string="Occupied"
+                    domain="[('status', '=', 'occupied')]" />
+
+                <group expand="1" string="Group By">
+                    <filter name="group_by_room_type" string="Room Type"
+                        context="{'group_by': 'room_type'}" />
+                    <filter name="group_by_status" string="Status"
+                        context="{'group_by': 'status'}" />
+                </group>
+
+                <field name="room_number" />
+                <field name="room_type" />
+                <field name="capacity" />
+                <field name="price" />
+
+                <searchpanel>
+                    <field name="room_type" string="Room Type" />
+                    <field name="status" string="Status" />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hotel_room" model="ir.actions.act_window">
+        <field name="name">Rooms</field>
+        <field name="res_model">hotel.room</field>
+        <field name="view_mode">kanban,form,tree</field>
+    </record>
+</odoo>

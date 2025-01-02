@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hotel_customer_tree" model="ir.ui.view">
+        <field name="name">customer.tree</field>
+        <field name="model">hotel.customer</field>
+        <field name="arch" type="xml">
+            <tree string="Customers">
+                <field name="name" />
+                <field name="email" optional="hidden" />
+                <field name="phone" optional="hidden" />
+                <field name="check_in_date" />
+                <field name="check_out_date" />
+                <field name="room_id" optional="show" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hotel_customer_form" model="ir.ui.view">
+        <field name="name">customer.form</field>
+        <field name="model">hotel.customer</field>
+        <field name="arch" type="xml">
+            <form string="Customer">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="email" />
+                            <field name="phone" />
+                            <field name="address" />
+                        </group>
+                        <group>
+                            <field name="check_in_date" />
+                            <field name="check_out_date" />
+                            <field name="room_id" />
+                            <field name="tag_ids" widget="many2many_tags" />
+                        </group>
+
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"
+                        groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotel_customer_search" model="ir.ui.view">
+        <field name="name">customer.search</field>
+        <field name="model">hotel.customer</field>
+        <field name="arch" type="xml">
+            <search string="Customers">
+                <filter name="checked_in" string="Checked In"
+                    domain="[('check_in_date', '!=', False), ('check_out_date', '=', False)]" />
+                <filter name="checked_out" string="Checked Out"
+                    domain="[('check_out_date', '!=', False)]" />
+
+                <group expand="1" string="Group By">
+                    <filter name="group_by_room" string="Room" context="{'group_by': 'room_id'}" />
+                    <filter name="group_by_check_in_date" string="Check-In Date"
+                        context="{'group_by': 'check_in_date'}" />
+                </group>
+
+                <field name="name" />
+                <field name="email" />
+                <field name="phone" />
+                <field name="check_in_date" />
+                <field name="check_out_date" />
+                <field name="room_id" />
+
+                <searchpanel>
+                    <field name="room_id" string="Room" />
+                </searchpanel>
+            </search>
+
+        </field>
+    </record>
+
+
+    <record id="action_hotel_customer" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">hotel.customer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids"
+            eval="[Command.clear(),
+                                 (0,0,{'view_mode':'tree','view_id':ref('view_hotel_customer_tree')}),
+                                 (0,0,{'view_mode':'form','view_id':ref('view_hotel_customer_form')})]" />
+        <field name="help" type="html">
+            <p class="a_view_nocontent_selling_face">
+                Create a new customer
+            </p>
+        </field>
+    </record>
+</odoo>

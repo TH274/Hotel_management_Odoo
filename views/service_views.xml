@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hotel_service_form" model="ir.ui.view">
+        <field name="name">hotel.service.form</field>
+        <field name="model">hotel.service</field>
+        <field name="arch" type="xml">
+            <form string="Hotel Service">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="service_type" />
+                            <field name="description" />
+                            <field name="price" />
+                            <field name="duration" />
+                            <field name="available" />
+                        </group>
+                        <group>
+                            <field name="room_id" />
+                            <field name="reservation_id" />
+                            <field name="customer_id" />
+                            <field name="total_cost" readonly="1" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"
+                        groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotel_service_tree" model="ir.ui.view">
+        <field name="name">hotel.service.tree</field>
+        <field name="model">hotel.service</field>
+        <field name="arch" type="xml">
+            <tree string="Hotel Services">
+                <field name="room_id" />
+                <field name="name" optional="hidden" />
+                <field name="service_type" optional="show"/>
+                <field name="price" optional="show" />
+                <field name="duration" optional="show"/>
+                <field name="available" optional="show"/>
+                <field name="reservation_id" optional="hidden" />
+                <field name="customer_id" optional="show" />
+                <field name="total_cost" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hotel_service_search" model="ir.ui.view">
+        <field name="name">hotel.service.search</field>
+        <field name="model">hotel.service</field>
+        <field name="arch" type="xml">
+            <search string="Hotel Services">
+                <field name="room_id" />
+                <field name="name"/>
+                <field name="service_type" />
+                <field name="price"/>
+                <field name="available" />
+                <field name="reservation_id"/>
+                <field name="customer_id" />
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hotel_service" model="ir.actions.act_window">
+        <field name="name">Hotel Services</field>
+        <field name="res_model">hotel.service</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_hotel_service_tree" />
+    </record>
+</odoo>

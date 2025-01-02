@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hotel_sales_tree" model="ir.ui.view">
+        <field name="name">hotel.sales.tree</field>
+        <field name="model">hotel.sales</field>
+        <field name="arch" type="xml">
+            <tree string="Hotel Sales">
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="sale_date"/>
+                <field name="amount_total"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hotel_sales_form" model="ir.ui.view">
+        <field name="name">hotel.sales.form</field>
+        <field name="model">hotel.sales</field>
+        <field name="arch" type="xml">
+            <form string="Hotel Sales">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="customer_id"/>
+                        <field name="sale_date"/>
+                        <field name="amount_total" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Sale Lines">
+                            <field name="sale_line_ids">
+                                <tree string="Sale Lines">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                    <field name="price_subtotal"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hotel_sales" model="ir.actions.act_window">
+        <field name="name">Hotel Sales</field>
+        <field name="res_model">hotel.sales</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
