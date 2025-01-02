@@ -15,7 +15,7 @@
     <menuitem id="menu_hotel" 
         name="Hotels" 
         parent="hotel_management_menu" 
-        action="action_hotel"
+        action="action_hotel_hotel"
         sequence="3"/>
 
 
@@ -59,6 +59,9 @@
     <menuitem id="menu_configuration" name="Configuration" sequence="100"
         parent="menu_hotel_root" />
     
-    <menuitem id="menu_customer_tag" name="Tags" parent="menu_configuration"
+    <menuitem id="menu_customer_tag" name="Customer Tags" parent="menu_configuration"
         action="action_customer_tag" />
+
+    <menuitem id="menu_room_tag" name="Room Tags" parent="menu_configuration"
+        action="action_room_tag" />
 </odoo>

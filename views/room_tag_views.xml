@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_room_tag_tree" model="ir.ui.view">
+        <field name="name">room.tag.tree</field>
+        <field name="model">room.tag</field>
+        <field name="arch" type="xml">
+            <tree string="Room Tags" editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_room_tag" model="ir.actions.act_window">
+        <field name="name">Room Tags</field>
+        <field name="res_model">room.tag</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+         <p class="a_view_nocontent_selling_face">
+                Create a new room tag
+            </p>
+        </field>
+    </record>
+</odoo>

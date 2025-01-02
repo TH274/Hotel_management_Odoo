@@ -45,7 +45,7 @@
         </field>
     </record>
 
-    <record id="action_hotel" model="ir.actions.act_window">
+    <record id="action_hotel_hotel" model="ir.actions.act_window">
         <field name="name">Hotels</field>
         <field name="res_model">hotel.hotel</field>
         <field name="view_mode">tree,form</field>

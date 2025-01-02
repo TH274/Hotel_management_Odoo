@@ -12,26 +12,6 @@
         </field>
     </record>
 
-    <record id="view_customer_tag_kanban" model="ir.ui.view">
-        <field name="name">customer.tag.kanban</field>
-        <field name="model">customer.tag</field>
-        <field name="arch" type="xml">
-            <kanban string="Customer Tags">
-                <templates>
-                    <t t-name="kanban-box">
-                        <div
-                            t-attf-style="background-color: #{record.color}; padding: 8px; border-radius: 8px;">
-                            <span>
-                                <field name="name" />
-                            </span>
-                        </div>
-                    </t>
-                </templates>
-            </kanban>
-        </field>
-    </record>
-
-
     <record id="action_customer_tag" model="ir.actions.act_window">
         <field name="name">Customer Tags</field>
         <field name="res_model">customer.tag</field>
