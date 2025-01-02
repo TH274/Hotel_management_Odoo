@@ -7,4 +7,4 @@ class CustomerTag(models.Model):
 
     name = fields.Char(string='Tag Name', required=True)
     sequence = fields.Integer(string='Sequence', default=10)
-    color = fields.Integer(string='Color Index')
+    color = fields.Integer(string='Color Index', default=0)

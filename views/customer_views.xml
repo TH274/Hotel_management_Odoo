@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <tree string="Customers">
                 <field name="name" />
+                <field name="tag_ids" widget="many2many_tags" />
                 <field name="email" optional="hidden" />
                 <field name="phone" optional="hidden" />
                 <field name="check_in_date" />
