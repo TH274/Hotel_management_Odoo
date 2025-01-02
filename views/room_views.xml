@@ -10,8 +10,11 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="reference" readonly="True" />
                             <field name="room_number" />
                             <field name="room_type" />
+                            <field name="hotel_id" />
+                            <field name="hotel_location" readonly="True" />
                             <field name="capacity" />
                         </group>
                         <group>
@@ -46,11 +49,13 @@
         </field>
     </record>
 
+
     <record id="view_hotel_room_tree" model="ir.ui.view">
         <field name="name">room.tree</field>
         <field name="model">hotel.room</field>
         <field name="arch" type="xml">
             <tree string="Room List">
+                <field name="reference" />
                 <field name="room_number" />
                 <field name="room_type" optional="show" />
                 <field name="capacity" optional="hide" />
@@ -60,65 +65,61 @@
         </field>
     </record>
 
-<record id="view_hotel_room_kanban" model="ir.ui.view">
-    <field name="name">room.kanban</field>
-    <field name="model">hotel.room</field>
-    <field name="arch" type="xml">
-        <kanban string="Room List">
-            <field name="id" />
-            <templates>
-                <t t-name="kanban-box">
-                    <div class="o_kanban_card o_kanban_card_border oe_kanban_global_click">
-                        <!-- Header Section -->
-                        <div class="o_kanban_primary o_kanban_header">
-                            <div class="o_kanban_title">
-                                <span class="fa fa-door-open"
-                                    style="margin-right: 8px; color: #007bff;"></span>
-                                <strong>
-                                    <field name="room_number" />
-                                </strong>
-                            </div>
-                            <!-- Status Tag on the Right -->
-                            <div class="o_kanban_secondary_status" style="text-align: right;">
-                                <span class="o_tag"
-                                    t-att-style="
+    <record id="view_hotel_room_kanban" model="ir.ui.view">
+        <field name="name">room.kanban</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <kanban string="Room List">
+                <field name="id" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="o_kanban_card o_kanban_card_border oe_kanban_global_click">
+                            <div class="o_kanban_primary o_kanban_header">
+                                <div class="o_kanban_title">
+                                    <span class="fa fa-door-open"
+                                        style="margin-right: 8px; color: #007bff;"></span>
+                                    <strong>
+                                        <field name="room_number" />
+                                    </strong>
+                                </div>
+                                <div class="o_kanban_secondary_status" style="text-align: right;">
+                                    <span class="o_tag"
+                                        t-att-style="
                                         'display: inline-block; padding: 5px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; color: #fff;' +
                                         (record.status.raw_value === 'available' ? 'background-color: #28a745;' :
                                         record.status.raw_value === 'reserved' ? 'background-color: #ffc107;' :
                                         'background-color: #dc3545;')">
-                                    <field name="status" />
-                                </span>
+                                        <field name="status" />
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="o_kanban_details">
+                                <div class="o_kanban_item">
+                                    <span class="fa fa-bed"
+                                        style="margin-right: 5px; color: #6c757d;"></span>
+                                    <strong>Type: </strong>
+                                    <field name="room_type" />
+                                </div>
+                                <div class="o_kanban_item">
+                                    <span class="fa fa-users"
+                                        style="margin-right: 5px; color: #6c757d;"></span>
+                                    <strong>Capacity: </strong>
+                                    <field name="capacity" />
+                                </div>
+                                <div class="o_kanban_item">
+                                    <span class="fa fa-tag"
+                                        style="margin-right: 5px; color: #6c757d;"></span>
+                                    <strong>Price: </strong>
+                                    <field name="price" widget="monetary"
+                                        options="{'currency_field': 'currency_id'}" />
+                                </div>
                             </div>
                         </div>
-                        <!-- Details Section -->
-                        <div class="o_kanban_details">
-                            <div class="o_kanban_item">
-                                <span class="fa fa-bed"
-                                    style="margin-right: 5px; color: #6c757d;"></span>
-                                <strong>Type: </strong>
-                                <field name="room_type" />
-                            </div>
-                            <div class="o_kanban_item">
-                                <span class="fa fa-users"
-                                    style="margin-right: 5px; color: #6c757d;"></span>
-                                <strong>Capacity: </strong>
-                                <field name="capacity" />
-                            </div>
-                            <div class="o_kanban_item">
-                                <span class="fa fa-tag"
-                                    style="margin-right: 5px; color: #6c757d;"></span>
-                                <strong>Price: </strong>
-                                <field name="price" widget="monetary"
-                                    options="{'currency_field': 'currency_id'}" />
-                            </div>
-                        </div>
-                    </div>
-                </t>
-            </templates>
-        </kanban>
-    </field>
-</record>
-
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 
 
     <record id="view_hotel_room_search" model="ir.ui.view">

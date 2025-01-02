@@ -3,3 +3,4 @@ from . import customer
 from . import room_management
 from . import customer_tag
 from . import sales
+from . import hotel

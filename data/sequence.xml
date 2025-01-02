@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data noupdate="1">
-        <record id="seq_food_order" model="ir.sequence">
+        <record id="seq_hotel_room" model="ir.sequence">
             <field name="name">Hotel Reference</field>
-            <field name="code">hotel.appointment</field>
+            <field name="code">hotel.room</field>
             <field name="prefix">HT</field>
             <field name="padding">5</field>
             <field name="company_id" eval ="False"/>

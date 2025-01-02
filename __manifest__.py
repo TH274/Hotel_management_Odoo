@@ -9,7 +9,7 @@
         - Track customer check-ins and check-outs.
         - Generate billing and maintain customer records.
     """,
-    'author': 'Kitzzu',
+    'author': 'Odoo S.A.',
     'category': 'Services/Hotel Management',
     'depends': [
         'base',
@@ -22,6 +22,7 @@
         "data/sequence.xml",
         "views/customer_views.xml",
         "views/customer_readonly_views.xml",
+        "views/hotel_views.xml",
         "views/reservation_views.xml",
         "views/service_views.xml",
         "views/sales_views.xml",

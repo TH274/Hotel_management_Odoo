@@ -11,19 +11,26 @@
         parent="hotel_management_menu" 
         action="action_hotel_room"
         sequence="2"/>
+    
+    <menuitem id="menu_hotel" 
+        name="Hotels" 
+        parent="hotel_management_menu" 
+        action="action_hotel"
+        sequence="3"/>
+
 
     <menuitem id="hotel_reservation_menu"
         name="Reservation Management"
         parent="hotel_management_menu" 
         action="action_hotel_reservation"
-        sequence="3"/>
+        sequence="4"/>
     
     <menuitem
         id="hotel_service_menu"
         name="Service Management"
         action="action_hotel_service"
         parent="hotel_management_menu"
-        sequence="4"/>
+        sequence="5"/>
     
     <!-- Customer Menu Item -->    
     <menuitem id="customer_management_menu" name="Customer Management" parent="menu_hotel_root" sequence="2"/>

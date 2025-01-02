@@ -1,4 +1,4 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, _
 from datetime import timedelta
 
 class HotelRoom(models.Model):
@@ -6,13 +6,14 @@ class HotelRoom(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Hotel Room'
 
-    _rec_name = 'room_number'
-
+    reference = fields.Char(string='Reference', default=lambda self: _('New'))
     room_number = fields.Char(string='Room Number', required=True, tracking=True)
     room_type = fields.Selection(
         [('single', 'Single'), ('double', 'Double'), ('suite', 'Suite')],
         string='Room Type', required=True, tracking=True
     )
+    hotel_id = fields.Many2one('hotel.hotel', string='Hotel', required=True, tracking=True)
+    hotel_location = fields.Char(string='Hotel Location', related='hotel_id.address', store=True, readonly=True)
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
     capacity = fields.Integer(string='Capacity', required=True, default=1, tracking=True)
     price = fields.Float(string='Price per Night', required=True, tracking=True)
@@ -23,6 +24,15 @@ class HotelRoom(models.Model):
     notes = fields.Text(string='Notes', tracking=True)
     reservation_ids = fields.One2many('hotel.reservation', 'room_id', string='Reservations')
 
+    @api.model
+    def create(self, vals):
+        if not vals.get('reference') or vals['reference'] == 'New':
+            vals['reference'] = self.env['ir.sequence'].next_by_code('hotel.room') or _('New')
+
+        if vals.get('room_number'):
+            vals['reference'] = "{}-{}".format(vals['reference'], vals['room_number'])
+
+        return super().create(vals)
 
     @api.onchange('room_type')
     def _onchange_room_type(self):
@@ -73,7 +83,6 @@ class HotelReservation(models.Model):
         for record in self:
             record.guest_name = record.customer_id.name if record.customer_id else ''
 
-from odoo import api, fields, models
 
 class HotelService(models.Model):
     _name = 'hotel.service'
@@ -112,7 +121,7 @@ class HotelService(models.Model):
     @api.depends('price', 'duration')
     def _compute_total_cost(self):
         for service in self:
-            service.total_cost = service.price * service.duration  # Basic cost calculation for service
+            service.total_cost = service.price * service.duration 
 
     total_cost = fields.Float(string="Total Cost", compute='_compute_total_cost', store=True)
 
@@ -199,6 +208,4 @@ class HotelService(models.Model):
             if service_line:
                 service_line.unlink()
             invoice.action_cancel()
-
-
 
