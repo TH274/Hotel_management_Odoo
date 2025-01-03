@@ -44,7 +44,4 @@
         <field name="res_model">hotel.reservation</field>
         <field name="view_mode">tree,form</field>
     </record>
-
-    <menuitem id="menu_hotel_management" name="Hotel Management"/>
-    <menuitem id="menu_hotel_reservation" name="Reservations" parent="menu_hotel_management" action="action_hotel_reservation"/>
 </odoo>

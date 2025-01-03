@@ -33,7 +33,15 @@ class HotelCustomer(models.Model):
     def create(self, vals):
         if not vals.get('booking_code') or vals['booking_code'] == 'New':
             vals['booking_code'] = self.env['ir.sequence'].next_by_code('hotel.customer') or _('New')
-        return super().create(vals)
+        record = super().create(vals)
+        self.env['hotel.booking'].create({
+            'guest_name': record.name,
+            'hotel_id': record.hotel_id.id,
+            'room_number': record.room_id.room_number,
+            'check_in_date': record.check_in_date,
+            'check_out_date': record.check_out_date,
+        })
+        return record
 
     def action_confirm_booking(self):
         for record in self:
