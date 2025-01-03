@@ -1,12 +1,11 @@
-from odoo import models, fields, api, exceptions, _
-from datetime import timedelta
+from odoo import models, fields, api, _
 
 class HotelRoom(models.Model):
     _name = 'hotel.room'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Hotel Room'
 
-    reference = fields.Char(string='Hotel Code', default=lambda self: _('New'))  
+    reference = fields.Char(string='Hotel Code', default=lambda self: _('New'))
     room_number = fields.Char(string='Room Number', required=True, tracking=True)
     room_type = fields.Selection(
         [('single', 'Single'), ('double', 'Double')],
@@ -46,7 +45,3 @@ class HotelRoom(models.Model):
 
     def action_reserved(self):
         self.write({'status': 'reserved'})
-
-    def action_occupied(self):
-        self.write({'status': 'occupied'})
-        
