@@ -1,7 +1,6 @@
 from odoo import models, fields, api, exceptions, _
 from datetime import timedelta
 
-
 class HotelService(models.Model):
     _name = 'hotel.service'
     _inherit = ['mail.thread', 'mail.activity.mixin']

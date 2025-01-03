@@ -33,10 +33,10 @@
         sequence="5"/>
     
     <!-- Customer Menu Item -->    
-    <menuitem id="customer_management_menu" name="Customer Management" parent="menu_hotel_root" sequence="2"/>
+    <menuitem id="customer_management_menu" name="Customer Orders" parent="menu_hotel_root" sequence="2"/>
 
     <menuitem id="menu_customer"
-        name="Customers"
+        name="Customers Booking Orders"
         parent="customer_management_menu"
         action="action_hotel_customer"
         sequence="5"/>

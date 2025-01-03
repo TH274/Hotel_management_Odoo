@@ -6,12 +6,22 @@
             <form string="Hotel">
                 <sheet>
                     <group>
+                        <field name="reference" readonly="1"/>
                         <field name="name"/>
                         <field name="address"/>
-                        <field name="phone"/>
-                        <field name="email"/>
-                        <field name="website"/>
+                        <field name="num_floors"/>
+                        <field name="num_rooms" readonly="1"/>
                     </group>
+                    <notebook>
+                        <page string="Rooms">
+                            <field name="room_ids">
+                                <tree string="Rooms">
+                                    <field name="room_number"/>
+                                    <field name="status"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -21,29 +31,16 @@
         <field name="name">hotel.hotel.tree</field>
         <field name="model">hotel.hotel</field>
         <field name="arch" type="xml">
-            <tree string="Hotel">
+            <tree string="Hotels">
+                <field name="reference"/>
                 <field name="name"/>
                 <field name="address"/>
-                <field name="phone"/>
-                <field name="email"/>
-                <field name="website"/>
+                <field name="num_floors"/>
+                <field name="num_rooms"/>
             </tree>
         </field>
     </record>
-
-    <record id="view_hotel_search" model="ir.ui.view">
-        <field name="name">hotel.hotel.search</field>
-        <field name="model">hotel.hotel</field>
-        <field name="arch" type="xml">
-            <search string="Hotel">
-                <field name="name"/>
-                <field name="address"/>
-                <field name="phone"/>
-                <field name="email"/>
-                <field name="website"/>
-            </search>
-        </field>
-    </record>
+    
 
     <record id="action_hotel_hotel" model="ir.actions.act_window">
         <field name="name">Hotels</field>
