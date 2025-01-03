@@ -17,7 +17,6 @@
         'product',
         ],
     'data': [
-        "views/groups.xml",
         "security/ir.model.access.csv",
         "data/sequence.xml",
         "views/room_tag_views.xml",
