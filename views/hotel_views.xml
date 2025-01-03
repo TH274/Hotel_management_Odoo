@@ -6,23 +6,28 @@
             <form string="Hotel">
                 <sheet>
                     <group>
-                        <field name="reference" readonly="1"/>
-                        <field name="name"/>
-                        <field name="address"/>
-                        <field name="num_floors"/>
-                        <field name="num_rooms" readonly="1"/>
+                        <field name="reference" readonly="1" />
+                        <field name="name" />
+                        <field name="address" />
+                        <field name="num_floors" />
+                        <field name="num_rooms" readonly="1" />
                     </group>
                     <notebook>
                         <page string="Rooms">
                             <field name="room_ids">
                                 <tree string="Rooms">
-                                    <field name="room_number"/>
-                                    <field name="status"/>
+                                    <field name="room_number" />
+                                    <field name="status" />
                                 </tree>
                             </field>
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"
+                        groups="base.group_user" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
             </form>
         </field>
     </record>
@@ -32,15 +37,15 @@
         <field name="model">hotel.hotel</field>
         <field name="arch" type="xml">
             <tree string="Hotels">
-                <field name="reference"/>
-                <field name="name"/>
-                <field name="address"/>
-                <field name="num_floors"/>
-                <field name="num_rooms"/>
+                <field name="reference" />
+                <field name="name" />
+                <field name="address" />
+                <field name="num_floors" />
+                <field name="num_rooms" />
             </tree>
         </field>
     </record>
-    
+
 
     <record id="action_hotel_hotel" model="ir.actions.act_window">
         <field name="name">Hotels</field>
