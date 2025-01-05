@@ -17,20 +17,13 @@
         parent="hotel_management_menu" 
         action="action_hotel_hotel"
         sequence="3"/>
-
-
-    <menuitem id="hotel_reservation_menu"
-        name="Reservation Management"
-        parent="hotel_management_menu" 
-        action="action_hotel_reservation"
-        sequence="4"/>
     
     <menuitem
         id="hotel_service_menu"
         name="Service Management"
         action="action_hotel_service"
         parent="hotel_management_menu"
-        sequence="5"/>
+        sequence="4"/>
     
     <!-- Customer Menu Item -->    
     <menuitem id="customer_management_menu" name="Customer Orders" parent="menu_hotel_root" sequence="2"/>
