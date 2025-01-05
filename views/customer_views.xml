@@ -41,9 +41,11 @@
                             <field name="booking_date" readonly="1" />
                         </group>
                         <group>
+                            <field name="tag_ids" widget="many2many_tags" />
                             <field name="check_in_date" />
                             <field name="check_out_date" />
                             <field name="status" readonly="1" />
+                            <field name="create_uid"/>
                         </group>
                     </group>
                 </sheet>

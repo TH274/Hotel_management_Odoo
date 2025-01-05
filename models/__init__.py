@@ -4,5 +4,4 @@ from . import room_management
 from . import tags
 from . import sales
 from . import hotel
-from . import reservation
 from . import service

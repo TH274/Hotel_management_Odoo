@@ -21,6 +21,7 @@ class HotelCustomer(models.Model):
         ('cancelled', 'Cancelled'),
     ], string='Booking Status', default='new', tracking=True)
     total_amount = fields.Float(string='Total Amount', compute='_compute_total_amount', store=True)
+    tag_ids = fields.Many2many('customer.tag', string='Tags')
 
 
     @api.constrains('check_in_date', 'check_out_date')
@@ -34,13 +35,10 @@ class HotelCustomer(models.Model):
         if not vals.get('booking_code') or vals['booking_code'] == 'New':
             vals['booking_code'] = self.env['ir.sequence'].next_by_code('hotel.customer') or _('New')
         record = super().create(vals)
-        self.env['hotel.booking'].create({
-            'guest_name': record.name,
-            'hotel_id': record.hotel_id.id,
-            'room_number': record.room_id.room_number,
-            'check_in_date': record.check_in_date,
-            'check_out_date': record.check_out_date,
-        })
+        
+        if 'hotel.booking' in self.env:
+            self.env['hotel.booking']._create_booking_from_customer(record)
+        
         return record
 
     def action_confirm_booking(self):

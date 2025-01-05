@@ -21,6 +21,7 @@
                         <group>
                             <field name="price" />
                             <field name="status" />
+                            <field name="create_uid"/>
                         </group>
                     </group>
                     <notebook>
