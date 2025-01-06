@@ -30,6 +30,7 @@
         "views/room_views.xml",
         "views/customer_tag_views.xml",
         "views/menu.xml",
+        "reports/report_customer.xml",
     ],
     'installable': True,
     'application': True,

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <report
+        id="report_customer_card"
+        model="hotel.customer"
+        string="Customer Card"
+        report_type="qweb-pdf"
+        name="hotel_management.report_customer"
+        file="hotel_management.report_customer"
+        print_report_name="'%s' % object.name"
+        attachment_use="False"
+    />
+
+    <!-- <record id="action_report_action_name" model="ir.actions.report">
+        <field name="name">Name</field>
+        <field name="model">action_name</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">report.name</field>
+        <field name="report_file">report.name</field>
+        <field name="print_report_name">'%s' % object.name</field>
+        <field name="binding_model_id" ref="model_action_name"/>
+        <field name="binding_type">report</field>
+    </record> -->
+</odoo>

@@ -4,6 +4,8 @@ class HotelRoom(models.Model):
     _name = 'hotel.room'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Hotel Room'
+    _rec_name = 'room_number' 
+
 
     reference = fields.Char(string='Hotel Code', default=lambda self: _('New'))
     room_number = fields.Char(string='Room Number', required=True, tracking=True)
@@ -51,4 +53,5 @@ class HotelRoom(models.Model):
         for record in self:
             name = record.room_number or _('Unnamed Room')
             result.append((record.id, name))
+            _logger.info(f"Name Get Called for Room: {name}")
         return result
