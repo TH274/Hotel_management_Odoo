@@ -5,7 +5,7 @@
         <field name="model">hotel.customer</field>
         <field name="arch" type="xml">
             <tree string="Customers">
-                <field name="booking_code" optional="hidden"/>
+                <field name="booking_code" optional="hidden" />
                 <field name="name" />
                 <field name="hotel_id" />
                 <field name="room_id" optional="show" />
@@ -13,6 +13,7 @@
                 <field name="check_in_date" />
                 <field name="check_out_date" />
                 <field name="status" />
+                <field name="create_uid" optional="show" />
             </tree>
         </field>
     </record>
@@ -22,21 +23,21 @@
         <field name="model">hotel.customer</field>
         <field name="arch" type="xml">
             <form string="Customer">
-            <header>
-                <button name="action_confirm" string="Confirm" type="object"
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object"
                         invisible="status != 'new'" class="oe_highlight" />
-                <button name="action_cancel" string="Cancel" type="object"
+                    <button name="action_cancel" string="Cancel" type="object"
                         invisible="status == 'confirmed'" />
-                <field name="status" widget="statusbar"
-                statusbar_visible="new,confirmed,cancelled" />
-            </header>
+                    <field name="status" widget="statusbar"
+                        statusbar_visible="new,confirmed,cancelled" />
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="booking_code" readonly="1" />
                             <field name="name" />
                             <field name="hotel_id" />
-                            <field name="room_type"/>
+                            <field name="room_type" />
                             <field name="room_id" />
                             <field name="booking_date" readonly="1" />
                         </group>
@@ -45,7 +46,7 @@
                             <field name="check_in_date" />
                             <field name="check_out_date" />
                             <field name="status" readonly="1" />
-                            <field name="create_uid"/>
+                            <field name="create_uid" />
                         </group>
                     </group>
                 </sheet>
@@ -98,7 +99,7 @@
             eval="[Command.clear(),
                                  (0,0,{'view_mode':'tree','view_id':ref('view_hotel_customer_tree')}),
                                  (0,0,{'view_mode':'form','view_id':ref('view_hotel_customer_form')})]" />
-        <field name="search_view_id" ref="view_hotel_customer_search"/>
+        <field name="search_view_id" ref="view_hotel_customer_search" />
         <field name="help" type="html">
             <p class="a_view_nocontent_selling_face">
                 Create a new customer

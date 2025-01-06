@@ -45,3 +45,10 @@ class HotelRoom(models.Model):
 
     def action_reserved(self):
         self.write({'status': 'reserved'})
+
+    def name_get(self):
+        result = []
+        for record in self:
+            name = record.room_number or _('Unnamed Room')
+            result.append((record.id, name))
+        return result

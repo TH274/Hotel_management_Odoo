@@ -10,8 +10,10 @@ class HotelCustomer(models.Model):
     booking_code = fields.Char(string='Booking Code', readonly=True, default=lambda self: _('New'))
     booking_date = fields.Date(string='Booking Date', default=fields.Date.today, readonly=True, tracking=True)
     hotel_id = fields.Many2one('hotel.hotel', string='Hotel', required=True, tracking=True)
-    room_id = fields.Many2one('hotel.room', string='Room', required=True, tracking=True,
-        domain="[('hotel_id', '=', hotel_id), ('room_type', '=', room_type), ('status', '=', 'available')]")
+    room_id = fields.Many2one('hotel.room',string='Room',required=True,tracking=True,
+        domain="[('hotel_id', '=', hotel_id), ('room_type', '=', room_type), ('status', '=', 'available')]",
+        context={'show_room_number': True}
+    )
     room_type = fields.Selection([('single', 'Single'), ('double', 'Double')], string='Room Type', tracking=True)
     check_in_date = fields.Date(string='Check-In Date', required=True, tracking=True)
     check_out_date = fields.Date(string='Check-Out Date', required=True, tracking=True)

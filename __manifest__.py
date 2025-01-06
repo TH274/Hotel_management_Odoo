@@ -2,6 +2,7 @@
     'name': 'Hotel Management',
     'version': '1.0',
     'summary': 'Manage hotel operations including reservations and billing',
+    'license': 'LGPL-3',
     'description': """
         Hotel Management Module:
         -------------------------

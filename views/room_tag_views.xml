@@ -4,7 +4,9 @@
         <field name="model">room.tag</field>
         <field name="arch" type="xml">
             <tree string="Room Tags" editable="bottom">
-                <field name="name"/>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="color" widget="color_picker" />
             </tree>
         </field>
     </record>
