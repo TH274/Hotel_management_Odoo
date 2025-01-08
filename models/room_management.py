@@ -1,4 +1,7 @@
 from odoo import models, fields, api, _
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class HotelRoom(models.Model):
     _name = 'hotel.room'
@@ -6,9 +9,8 @@ class HotelRoom(models.Model):
     _description = 'Hotel Room'
     _rec_name = 'room_number' 
 
-
     reference = fields.Char(string='Hotel Code', default=lambda self: _('New'))
-    room_number = fields.Char(string='Room Number', required=True, tracking=True)
+    room_number = fields.Integer(string='Room Number', required=True, tracking=True)
     room_type = fields.Selection(
         [('single', 'Single'), ('double', 'Double')],
         string='Room Type', required=True, tracking=True
@@ -41,6 +43,8 @@ class HotelRoom(models.Model):
             self.capacity = 1
         elif self.room_type == 'double':
             self.capacity = 2
+        else:
+            self.capacity = 1
 
     def action_available(self):
         self.write({'status': 'available'})

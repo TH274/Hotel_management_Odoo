@@ -27,7 +27,7 @@
                     <notebook>
                         <page string="Customer">
                             <field name="reservation_ids" context="{'default_room_id': active_id}">
-                                <tree editable="bottom">
+                                <tree string="Reservations">
                                     <field name="name" string="Customer Name"/>
                                     <field name="check_in_date" />
                                     <field name="check_out_date" />
@@ -132,8 +132,6 @@
                     domain="[('status', '=', 'available')]" />
                 <filter name="reserved" string="Reserved"
                     domain="[('status', '=', 'reserved')]" />
-                <filter name="occupied" string="Occupied"
-                    domain="[('status', '=', 'occupied')]" />
 
                 <group expand="1" string="Group By">
                     <filter name="group_by_room_type" string="Room Type"

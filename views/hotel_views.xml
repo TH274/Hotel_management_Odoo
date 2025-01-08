@@ -1,4 +1,5 @@
 <odoo>
+    <!-- Hotel Form View -->
     <record id="view_hotel_form" model="ir.ui.view">
         <field name="name">hotel.hotel.form</field>
         <field name="model">hotel.hotel</field>
@@ -6,17 +7,19 @@
             <form string="Hotel">
                 <sheet>
                     <group>
-                        <field name="reference" readonly="1" />
-                        <field name="name" />
-                        <field name="address" />
-                        <field name="num_floors" />
-                        <field name="num_rooms" readonly="1" />
+                        <group>
+                            <field name="reference" readonly="1" />
+                            <field name="name" />
+                            <field name="address" />
+                            <field name="num_floors" />
+                            <field name="num_rooms" readonly="1" />
+                        </group>
                     </group>
                     <notebook>
                         <page string="Rooms">
                             <field name="room_ids">
                                 <tree string="Rooms">
-                                    <field name="room_number" />
+                                    <field name="room_number" style="text-align: left;" />
                                     <field name="status" />
                                     <field name="create_uid" />
                                 </tree>
@@ -33,6 +36,8 @@
         </field>
     </record>
 
+
+    <!-- Hotel Tree View -->
     <record id="view_hotel_tree" model="ir.ui.view">
         <field name="name">hotel.hotel.tree</field>
         <field name="model">hotel.hotel</field>
@@ -47,10 +52,67 @@
         </field>
     </record>
 
+    <record id="view_hotel_kanban" model="ir.ui.view">
+        <field name="name">hotel.hotel.kanban</field>
+        <field name="model">hotel.hotel</field>
+        <field name="arch" type="xml">
+            <kanban string="Hotels">
+                <field name="name" />
+                <field name="address" />
+                <field name="num_floors" />
+                <field name="num_rooms" />
 
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="o_kanban_card o_kanban_card_border oe_kanban_global_click">
+                            <div class="o_kanban_primary o_kanban_header">
+                                <div class="o_kanban_title">
+                                    <span class="fa fa-building"
+                                        style="margin-right: 8px; color: #007bff;"></span>
+                                    <strong>
+                                        <t t-esc="record.name.value or 'Unnamed Hotel'" />
+                                    </strong>
+                                </div>
+                            </div>
+
+                            <div class="o_kanban_details">
+                                <div class="o_kanban_item">
+                                    <span class="fa fa-map-marker-alt"
+                                        style="margin-right: 5px; color: #6c757d;"></span>
+                                    <strong>Address: </strong>
+                                    <t t-esc="record.address.value or 'No Address'" />
+                                </div>
+                                <div class="o_kanban_item">
+                                    <span class="fa fa-layer-group"
+                                        style="margin-right: 5px; color: #6c757d;"></span>
+                                    <strong>Floors: </strong>
+                                    <t t-esc="record.num_floors.value or '0'" />
+                                </div>
+                                <div class="o_kanban_item">
+                                    <span class="fa fa-door-open"
+                                        style="margin-right: 5px; color: #6c757d;"></span>
+                                    <strong>Rooms: </strong>
+                                    <t t-esc="record.num_rooms.value or '0'" />
+                                </div>
+                            </div>
+
+                            <div class="o_kanban_secondary_status" style="text-align: right;">
+                                <button class="btn btn-info oe_kanban_global_click"
+                                    t-attf-data-id="{record.id.raw_value}">
+                                    <span class="fa fa-info-circle"
+                                        style="margin-right: 5px;"></span> More Info </button>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Hotel Action -->
     <record id="action_hotel_hotel" model="ir.actions.act_window">
         <field name="name">Hotels</field>
         <field name="res_model">hotel.hotel</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
     </record>
 </odoo>
