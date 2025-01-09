@@ -28,6 +28,8 @@ class HotelRoom(models.Model):
     )
     notes = fields.Text(string='Notes', tracking=True)
     reservation_ids = fields.One2many('hotel.customer', 'room_id', string='Reservations')
+    room_date = fields.Date(string='Creation Date', default=fields.Date.today, tracking=True)
+
 
     @api.model
     def create(self, vals):

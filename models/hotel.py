@@ -18,6 +18,9 @@ class HotelHotel(models.Model):
     num_rooms = fields.Integer(string='Number of Rooms', compute='_compute_num_rooms', store=True, tracking=True)
     manager_id = fields.Many2one('hr.employee', string='Hotel Manager', tracking=True)
     employee_ids = fields.Many2many('hr.employee', 'hotel_id', string='Employees', tracking=True)
+    room_date = fields.Date(string='Booking Date', default=fields.Date.today, readonly=True, tracking=True)
+
+
 
     @api.model
     def create(self, vals):

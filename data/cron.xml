@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data noupdate="1">
-        <record id="ir_cron_hotel_customer" model="ir.cron">
-            <field name="name">Hotel Customer Cron Job</field>
-            <field name="model_id" ref="model_hotel_customer"/>
-            <field name="type">ir.actions.server</field>
+        <record id="ir_cron_hotel_room_notify" model="ir.cron">
+            <field name="name">Check and Notify Unrented Rooms</field>
+            <field name="model_id" ref="model_hotel_room"/>
             <field name="state">code</field>
-            <field name="code">model.test_cron_job()</field>
-            <field name="interval_number">1</field>
+            <field name="code">model.check_and_notify_unrented_rooms()</field>
+            <field name="interval_number">1</field> 
             <field name="interval_type">days</field>
-            <field name="numbercall">-1</field>
+            <field name="numbercall">-1</field> 
             <field name="doall" eval="False"/>
         </record>
     </data>
