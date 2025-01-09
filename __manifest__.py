@@ -16,7 +16,8 @@
         'base',
         'mail',
         'product',
-        'web'
+        'web',
+        'hr'
         ],
     'data': [
         "security/security.xml",

@@ -12,6 +12,9 @@ class HotelHotel(models.Model):
     num_floors = fields.Integer(string='Number of Floors', tracking=True)
     room_ids = fields.One2many('hotel.room', 'hotel_id', string='Rooms', tracking=True)
     num_rooms = fields.Integer(string='Number of Rooms', compute='_compute_num_rooms', store=True, tracking=True)
+    manager_id = fields.Many2one('hr.employee', string='Hotel Manager', tracking=True)
+    employee_ids = fields.Many2many('hr.employee', 'hotel_id', string='Employees', tracking=True)
+
 
     @api.model
     def create(self, vals):
