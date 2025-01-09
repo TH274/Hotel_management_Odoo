@@ -79,7 +79,7 @@
                         <div class="o_kanban_card o_kanban_card_border oe_kanban_global_click">
                             <div class="o_kanban_primary o_kanban_header">
                                 <div class="o_kanban_title">
-                                    <span class="fa fa-building"
+                                    <span class="fa fa-building" title="Hotel"
                                         style="margin-right: 8px; color: #007bff;"></span>
                                     <strong>
                                         <t t-esc="record.name.value or 'Unnamed Hotel'" />
@@ -89,19 +89,19 @@
 
                             <div class="o_kanban_details">
                                 <div class="o_kanban_item">
-                                    <span class="fa fa-map-marker-alt"
+                                    <span class="fa fa-map-marker-alt" title="Address"
                                         style="margin-right: 5px; color: #6c757d;"></span>
                                     <strong>Address: </strong>
                                     <t t-esc="record.address.value or 'No Address'" />
                                 </div>
                                 <div class="o_kanban_item">
-                                    <span class="fa fa-layer-group"
+                                    <span class="fa fa-layer-group" title="Floors"
                                         style="margin-right: 5px; color: #6c757d;"></span>
                                     <strong>Floors: </strong>
                                     <t t-esc="record.num_floors.value or '0'" />
                                 </div>
                                 <div class="o_kanban_item">
-                                    <span class="fa fa-door-open"
+                                    <span class="fa fa-door-open" title="Rooms"
                                         style="margin-right: 5px; color: #6c757d;"></span>
                                     <strong>Rooms: </strong>
                                     <t t-esc="record.num_rooms.value or '0'" />
@@ -111,7 +111,7 @@
                             <div class="o_kanban_secondary_status" style="text-align: right;">
                                 <button class="btn btn-info oe_kanban_global_click"
                                     t-attf-data-id="{record.id.raw_value}">
-                                    <span class="fa fa-info-circle"
+                                    <span class="fa fa-info-circle" title="More Info"
                                         style="margin-right: 5px;"></span> More Info </button>
                             </div>
                         </div>

@@ -1,5 +1,8 @@
+import logging
 from odoo import models, fields, api, exceptions, _
 from datetime import date
+
+_logger = logging.getLogger(__name__)
 
 class HotelCustomer(models.Model):
     _name = 'hotel.customer'
@@ -10,7 +13,7 @@ class HotelCustomer(models.Model):
     booking_code = fields.Char(string='Booking Code', readonly=True, default=lambda self: _('New'))
     booking_date = fields.Date(string='Booking Date', default=fields.Date.today, readonly=True, tracking=True)
     hotel_id = fields.Many2one('hotel.hotel', string='Hotel', required=True, tracking=True)
-    room_id = fields.Many2one('hotel.room',string='Room',required=True,tracking=True,
+    room_id = fields.Many2one('hotel.room', string='Room', required=True, tracking=True,
         domain="[('hotel_id', '=', hotel_id), ('room_type', '=', room_type), ('status', '=', 'available')]",
         context={'show_room_number': True}
     )
@@ -25,23 +28,46 @@ class HotelCustomer(models.Model):
     total_amount = fields.Float(string='Total Amount', compute='_compute_total_amount', store=True)
     tag_ids = fields.Many2many('customer.tag', string='Tags')
 
-
     @api.constrains('check_in_date', 'check_out_date')
     def _check_dates(self):
         for record in self:
             if record.check_in_date > record.check_out_date:
+                _logger.error('Invalid dates for booking %s: check-in date %s is later than check-out date %s', record.id, record.check_in_date, record.check_out_date)
                 raise exceptions.ValidationError(_('Check-In Date cannot be later than Check-Out Date.'))
+            if record.check_in_date < date.today():
+                _logger.error('Invalid check-in date for booking %s: check-in date %s is in the past', record.id, record.check_in_date)
+                raise exceptions.ValidationError(_('Check-In Date cannot be in the past.'))
+
+    @api.constrains('room_id')
+    def _check_room_availability(self):
+        for record in self:
+            if record.room_id.status != 'available':
+                _logger.error('Room %s is not available for booking %s', record.room_id.id, record.id)
+                raise exceptions.ValidationError(_('The selected room is not available.'))
+
+    @api.constrains('name')
+    def _check_name(self):
+        for record in self:
+            if len(record.name) < 3:
+                _logger.error('Invalid customer name for booking %s: name %s is too short', record.id, record.name)
+                raise exceptions.ValidationError(_('The customer name must be at least 3 characters long.'))
 
     @api.model
     def create(self, vals):
+        _logger.debug('Creating a new booking with values: %s', vals)
         if not vals.get('booking_code') or vals['booking_code'] == 'New':
             vals['booking_code'] = self.env['ir.sequence'].next_by_code('hotel.customer') or _('New')
         record = super().create(vals)
-        
-        if 'hotel.booking' in self.env:
-            self.env['hotel.booking']._create_booking_from_customer(record)
-        
+        _logger.info('Created new booking with ID: %s and booking code: %s', record.id, record.booking_code)
         return record
+
+    @api.depends('room_id.price', 'check_in_date', 'check_out_date')
+    def _compute_total_amount(self):
+        for record in self:
+            if record.check_in_date and record.check_out_date:
+                duration = (record.check_out_date - record.check_in_date).days
+                record.total_amount = duration * record.room_id.price
+                _logger.debug('Computed total amount for booking %s: %s', record.id, record.total_amount)
 
     def action_confirm_booking(self):
         for record in self:
@@ -49,18 +75,8 @@ class HotelCustomer(models.Model):
                 record.status = 'confirmed'
                 record.room_id.status = 'reserved'
 
-    @api.depends('room_id.price', 'check_in_date', 'check_out_date')
-    def _compute_total_amount(self):
-        for record in self:
-            if record.check_in_date and record.check_out_date and record.room_id:
-                days = (record.check_out_date - record.check_in_date).days
-                record.total_amount = days * record.room_id.price
-            else:
-                record.total_amount = 0.0
-
     def action_confirm(self):
         self.write({'status': 'confirmed'})
 
     def action_cancel(self):
         self.write({'status': 'new'})
-

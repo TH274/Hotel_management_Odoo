@@ -1,5 +1,6 @@
-from odoo import models, fields, api, _
 import logging
+from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -30,27 +31,54 @@ class HotelRoom(models.Model):
 
     @api.model
     def create(self, vals):
+        _logger.debug('Creating a new hotel room with values: %s', vals)
         if not vals.get('reference') or vals['reference'] == 'New':
             hotel_ref = self.env['hotel.hotel'].browse(vals.get('hotel_id')).reference or self.env['ir.sequence'].next_by_code('hotel.room')
             room_number = vals.get('room_number', _('NewRoom'))
             vals['reference'] = "{}-{}".format(hotel_ref, room_number)
-
-        return super().create(vals)
+        record = super().create(vals)
+        _logger.info('Created new hotel room with ID: %s and reference: %s', record.id, record.reference)
+        return record
 
     @api.onchange('room_type')
     def _onchange_room_type(self):
+        _logger.debug('Room type changed to: %s', self.room_type)
         if self.room_type == 'single':
             self.capacity = 1
         elif self.room_type == 'double':
             self.capacity = 2
         else:
             self.capacity = 1
+        _logger.debug('Room capacity set to: %s', self.capacity)
 
     def action_available(self):
+        _logger.info('Setting room %s to available', self.id)
         self.write({'status': 'available'})
 
     def action_reserved(self):
+        _logger.info('Setting room %s to reserved', self.id)
         self.write({'status': 'reserved'})
+
+    @api.constrains('room_number')
+    def _check_room_number(self):
+        for record in self:
+            if record.room_number <= 0:
+                _logger.error('Invalid room number: %s', record.room_number)
+                raise ValidationError(_('The room number must be greater than zero.'))
+
+    @api.constrains('price')
+    def _check_price(self):
+        for record in self:
+            if record.price <= 0:
+                _logger.error('Invalid price: %s', record.price)
+                raise ValidationError(_('The price per night must be greater than zero.'))
+
+    @api.constrains('capacity')
+    def _check_capacity(self):
+        for record in self:
+            if record.capacity <= 0:
+                _logger.error('Invalid capacity: %s', record.capacity)
+                raise ValidationError(_('The capacity must be greater than zero.'))
 
     def name_get(self):
         result = []

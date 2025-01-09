@@ -77,14 +77,14 @@
                         <div class="o_kanban_card o_kanban_card_border oe_kanban_global_click">
                             <div class="o_kanban_primary o_kanban_header">
                                 <div class="o_kanban_title">
-                                    <span class="fa fa-door-open"
+                                    <span class="fa fa-door-open" title="Room"
                                         style="margin-right: 8px; color: #007bff;"></span>
                                     <strong>
                                         <field name="room_number" />
                                     </strong>
                                 </div>
                                 <div class="o_kanban_secondary_status" style="text-align: right;">
-                                    <span class="o_tag"
+                                    <span class="o_tag" title="Status"
                                         t-att-style="
                                         'display: inline-block; padding: 5px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; color: #fff;' +
                                         (record.status.raw_value === 'available' ? 'background-color: #28a745;' :
@@ -96,19 +96,19 @@
                             </div>
                             <div class="o_kanban_details">
                                 <div class="o_kanban_item">
-                                    <span class="fa fa-bed"
+                                    <span class="fa fa-bed" title="Room Type"
                                         style="margin-right: 5px; color: #6c757d;"></span>
                                     <strong>Type: </strong>
                                     <field name="room_type" />
                                 </div>
                                 <div class="o_kanban_item">
-                                    <span class="fa fa-users"
+                                    <span class="fa fa-users" title="Capacity"
                                         style="margin-right: 5px; color: #6c757d;"></span>
                                     <strong>Capacity: </strong>
                                     <field name="capacity" />
                                 </div>
                                 <div class="o_kanban_item">
-                                    <span class="fa fa-tag"
+                                    <span class="fa fa-tag" title="Price"
                                         style="margin-right: 5px; color: #6c757d;"></span>
                                     <strong>Price: </strong>
                                     <field name="price" widget="monetary"
