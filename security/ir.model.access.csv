@@ -4,7 +4,7 @@ access_hotel_hotel_manager,access.hotel.hotel.manager,model_hotel_hotel,hotel_ma
 access_hotel_hotel_admin,access.hotel.hotel.admin,model_hotel_hotel,hotel_management.group_hotel_admin,1,1,1,1
 
 access_hotel_room_employee,access.hotel.room.employee,model_hotel_room,hotel_management.group_hotel_employee,1,0,0,0
-access_hotel_room_manager,access.hotel.room.manager,model_hotel_room,hotel_management.group_hotel_manager,1,1,1,0
+access_hotel_room_manager,access.hotel.room.manager,model_hotel_room,hotel_management.group_hotel_manager,1,0,0,0
 access_hotel_room_admin,access.hotel.room.admin,model_hotel_room,hotel_management.group_hotel_admin,1,1,1,1
 
 access_room_tag_employee,access.room.tag.employee,model_room_tag,hotel_management.group_hotel_employee,1,0,0,0
