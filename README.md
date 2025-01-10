@@ -1,4 +1,4 @@
-# Hotel Management Extension
+# Hotel Management Odoo
 
 This repository contains an Odoo module designed as an extension for the main [Hotel Management Odoo Module](https://github.com/TH274/Hotel_management_Odoo). This extension provides additional tools and features to enhance hotel operations.
 
