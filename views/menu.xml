@@ -34,10 +34,10 @@
         action="action_hotel_customer"
         sequence="5"/>
     
-    <menuitem id="menu_customer_readonly"
-        name="View Customers"
+    <menuitem id="menu_customer_pending"
+        name="Customers Pending Orders"
         parent="customer_management_menu"
-        action="action_hotel_readonly_customer"
+        action="action_hotel_customer_pending"
         sequence="6"/>
 
     <!-- Sales Menu Item -->

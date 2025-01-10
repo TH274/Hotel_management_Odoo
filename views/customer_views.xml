@@ -9,7 +9,6 @@
                 <field name="name" />
                 <field name="hotel_id" />
                 <field name="room_id" optional="show" />
-                <field name="booking_date" optional="hidden" />
                 <field name="check_in_date" />
                 <field name="check_out_date" />
                 <field name="status" />
@@ -39,7 +38,6 @@
                             <field name="hotel_id" />
                             <field name="room_type" />
                             <field name="room_id" />
-                            <field name="booking_date" readonly="1" />
                         </group>
                         <group>
                             <field name="tag_ids" widget="many2many_tags" />
@@ -107,13 +105,37 @@
         </field>
     </record>
 
+    <record id="action_server_confirm_bookings" model="ir.actions.server">
+        <field name="name">Approve Bookings</field>
+        <field name="model_id" ref="model_hotel_customer" />
+        <field name="binding_model_id" ref="model_hotel_customer" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            records.action_confirm()
+        </field>
+    </record>
+
+    <!-- Add action server to List View -->
+    <record id="action_server_hotel_customer_list" model="ir.ui.view">
+        <field name="name">hotel.customer.list.action</field>
+        <field name="model">hotel.customer</field>
+        <field name="inherit_id" ref="view_hotel_customer_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <button name="%(action_server_confirm_bookings)d" string="Confirm" type="action"
+                    context="{}" class="oe_highlight" />
+            </xpath>
+        </field>
+    </record>
+
     <!-- Report Action -->
     <record id="action_report_customer_card" model="ir.actions.report">
         <field name="name">Customer Card</field>
         <field name="model">hotel.customer</field>
         <field name="report_name">hotel_management.report_customer</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="binding_model_id" ref="model_hotel_customer"/>
+        <field name="binding_model_id" ref="model_hotel_customer" />
         <field name="binding_type">report</field>
     </record>
 </odoo>

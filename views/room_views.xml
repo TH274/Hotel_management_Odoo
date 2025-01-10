@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form string="Room Form">
                 <field name="status" widget="statusbar"
-                    statusbar_visible="available,reserved"/>
+                    statusbar_visible="available,reserved" />
                 <sheet>
                     <group>
                         <group>
@@ -14,22 +14,22 @@
                             <field name="room_number" />
                             <field name="room_type" />
                             <field name="hotel_id" />
-                            <field name="room_date" />
+                            <field name="last_reserved_date" />
                             <field name="hotel_location" readonly="True" />
                             <field name="tag_ids" widget="many2many_tags" />
-                            <field name="capacity" readonly="True"/>
+                            <field name="capacity" readonly="True" />
                         </group>
                         <group>
                             <field name="price" />
                             <field name="status" />
-                            <field name="create_uid"/>
+                            <field name="create_uid" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Customer">
                             <field name="reservation_ids" context="{'default_room_id': active_id}">
                                 <tree string="Reservations">
-                                    <field name="name" string="Customer Name"/>
+                                    <field name="name" string="Customer Name" />
                                     <field name="check_in_date" />
                                     <field name="check_out_date" />
                                     <field name="total_amount" />

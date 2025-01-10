@@ -27,7 +27,7 @@
         "views/room_tag_views.xml",
         "views/customer_tag_views.xml",
         "views/customer_views.xml",
-        "views/customer_readonly_views.xml",
+        "views/customer_pending.xml",
         "views/room_views.xml",
         "views/hotel_views.xml",
         "views/service_views.xml",

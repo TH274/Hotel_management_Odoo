@@ -18,12 +18,15 @@ class HotelRoom(models.Model):
         """
         _logger.info("Running job to check unrented rooms for the last 7 days.")
         seven_days_ago = fields.Date.today() - timedelta(days=7)
+        _logger.debug(f"Date to check against: {seven_days_ago}")
 
         # Find rooms that haven't been rented in the last week
         unrented_rooms = self.search([
             ('last_reserved_date', '<=', seven_days_ago),
             ('status', '=', 'available')
         ])
+        _logger.debug(f"Unrented Rooms Found: {[room.id for room in unrented_rooms]}")
+
 
         for room in unrented_rooms:
             # Log the rooms for monitoring

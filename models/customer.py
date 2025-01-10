@@ -11,7 +11,6 @@ class HotelCustomer(models.Model):
 
     name = fields.Char(string='Customer Name', required=True, tracking=True)
     booking_code = fields.Char(string='Booking Code', readonly=True, default=lambda self: _('New'))
-    booking_date = fields.Date(string='Booking Date', default=fields.Date.today, readonly=True, tracking=True)
     hotel_id = fields.Many2one('hotel.hotel', string='Hotel', required=True, tracking=True)
     room_id = fields.Many2one('hotel.room', string='Room', required=True, tracking=True,
         domain="[('hotel_id', '=', hotel_id), ('room_type', '=', room_type), ('status', '=', 'available')]",
@@ -34,10 +33,7 @@ class HotelCustomer(models.Model):
             if record.check_in_date > record.check_out_date:
                 _logger.error('Invalid dates for booking %s: check-in date %s is later than check-out date %s', record.id, record.check_in_date, record.check_out_date)
                 raise exceptions.ValidationError(_('Check-In Date cannot be later than Check-Out Date.'))
-            if record.check_in_date < date.today():
-                _logger.error('Invalid check-in date for booking %s: check-in date %s is in the past', record.id, record.check_in_date)
-                raise exceptions.ValidationError(_('Check-In Date cannot be in the past.'))
-
+           
     @api.constrains('room_id')
     def _check_room_availability(self):
         for record in self:
@@ -58,8 +54,9 @@ class HotelCustomer(models.Model):
         if not vals.get('booking_code') or vals['booking_code'] == 'New':
             vals['booking_code'] = self.env['ir.sequence'].next_by_code('hotel.customer') or _('New')
         record = super().create(vals)
-        if 'hotel.booking' in self.env:
-            self.env['hotel.booking']._create_booking_from_customer(record)
+        if record.room_id and record.check_in_date:
+            record.room_id.last_reserved_date = record.check_in_date
+
         _logger.info('Created new booking with ID: %s and booking code: %s', record.id, record.booking_code)
         return record
 
@@ -82,3 +79,4 @@ class HotelCustomer(models.Model):
 
     def action_cancel(self):
         self.write({'status': 'new'})
+
