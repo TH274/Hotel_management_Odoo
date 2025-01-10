@@ -28,13 +28,7 @@ class HotelRoom(models.Model):
     )
     notes = fields.Text(string='Notes', tracking=True)
     reservation_ids = fields.One2many('hotel.customer', 'room_id', string='Reservations')
-    last_reserved_date = fields.Date(string='Last Reserved Date', compute='_compute_last_reserved_date', store=True)
-
-    @api.depends('reservation_ids')
-    def _compute_last_reserved_date(self):
-        for room in self:
-            last_reservation = room.reservation_ids.filtered(lambda r: r.status == 'confirmed').sorted(key=lambda r: r.check_in_date, reverse=True)
-            room.last_reserved_date = last_reservation[0].check_in_date if last_reservation else False
+    last_reserved_date = fields.Date(string='Last Reserved Date', default=fields.Date.today, tracking=True)
 
 
     @api.model
