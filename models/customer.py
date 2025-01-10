@@ -58,6 +58,8 @@ class HotelCustomer(models.Model):
         if not vals.get('booking_code') or vals['booking_code'] == 'New':
             vals['booking_code'] = self.env['ir.sequence'].next_by_code('hotel.customer') or _('New')
         record = super().create(vals)
+        if 'hotel.booking' in self.env:
+            self.env['hotel.booking']._create_booking_from_customer(record)
         _logger.info('Created new booking with ID: %s and booking code: %s', record.id, record.booking_code)
         return record
 
