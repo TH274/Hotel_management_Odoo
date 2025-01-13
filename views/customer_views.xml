@@ -44,13 +44,17 @@
                             <field name="check_in_date" />
                             <field name="check_out_date" />
                             <field name="status" readonly="1" />
-                            <field name="total_amount" readonly="1"/>
+                            <field name="total_amount" readonly="1" />
                             <field name="payment_status" readonly="1" />
                             <field name="create_uid" />
-                            <button name="action_open_payment_wizard" type="object" string="Pay Order"
-                                class="oe_highlight" invisible= "payment_status == 'paid'" />
                         </group>
                     </group>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_payment_wizard" type="object"
+                            string="Pay Order" 
+                            class="oe_highlight" icon="fa-shopping-cart"
+                            invisible="payment_status == 'paid'" />
+                    </div>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"
