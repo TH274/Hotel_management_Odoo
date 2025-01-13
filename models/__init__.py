@@ -7,3 +7,4 @@ from . import hotel
 from . import service
 from . import employee_extension
 from . import room_notification
+from . import payment
