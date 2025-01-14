@@ -52,4 +52,11 @@ class HotelPaymentWizard(models.TransientModel):
             'payment_date': datetime.now(),
             'payment_amount': self.payment_amount,
         })
-        return {'type': 'ir.actions.act_window_close'}
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'message': 'Order successfully Payed',
+                'type': 'rainbow_man',
+            },
+            'type': 'ir.actions.act_window_close'
+        }

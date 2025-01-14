@@ -33,7 +33,7 @@ class HotelCustomer(models.Model):
             if record.check_in_date > record.check_out_date:
                 _logger.error('Invalid dates for booking %s: check-in date %s is later than check-out date %s', record.id, record.check_in_date, record.check_out_date)
                 raise exceptions.ValidationError(_('Check-In Date cannot be later than Check-Out Date.'))
-           
+
     @api.constrains('room_id')
     def _check_room_availability(self):
         for record in self:
@@ -54,6 +54,11 @@ class HotelCustomer(models.Model):
         if not vals.get('booking_code') or vals['booking_code'] == 'New':
             vals['booking_code'] = self.env['ir.sequence'].next_by_code('hotel.customer') or _('New')
         record = super().create(vals)
+        record.message_post(
+            body=_('A new booking has been created with code: %s' % record.booking_code),
+            subject=_('Booking Created'),
+            message_type='notification'
+        )
         _logger.info('Created new booking with ID: %s and booking code: %s', record.id, record.booking_code)
         return record
 
@@ -65,15 +70,31 @@ class HotelCustomer(models.Model):
                 record.total_amount = duration * record.room_id.price
                 _logger.debug('Computed total amount for booking %s: %s', record.id, record.total_amount)
 
-    def action_confirm_booking(self):
+    def action_confirm(self):
         for record in self:
             if record.status == 'new':
                 record.status = 'confirmed'
                 record.room_id.status = 'reserved'
-
-    def action_confirm(self):
-        self.write({'status': 'confirmed'})
+                return {
+                    'effect': {
+                        'fadeout': 'slow',
+                        'message': 'successfully booked',
+                        'type': 'rainbow_man',
+                    }
+                }
+            else:
+                raise ValidationError("Cannot be confirmed")
 
     def action_cancel(self):
-        self.write({'status': 'new'})
-
+        for record in self:
+            if record.status != 'cancelled':
+                record.status = 'cancelled'
+                return {
+                    'effect': {
+                        'fadeout': 'slow',
+                        'message': 'successfully cancelled',
+                        'type': 'rainbow_man',
+                    }
+                }
+            else:
+                raise ValidationError("Cannot be cancelled")

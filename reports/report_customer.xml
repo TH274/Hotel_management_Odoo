@@ -7,17 +7,87 @@
         report_type="qweb-pdf"
         name="hotel_management.report_customer"
         file="hotel_management.report_customer"
-        print_report_name="'%s' % object.name"
+        print_report_name="'Customer Card - %s' % object.name"
     />
-    
+
     <template id="report_customer">
-        <t t-call="web.external_layout"/>
-        <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="doc">
-                <div>
-                    <h2>Customer: <t t-esc="doc.name"/></h2>
+        <t t-call="web.external_layout">
+            <main>
+                <div class="page">
+                    <t t-foreach="docs" t-as="doc">
+                        <div style="border: 1px solid #000; padding: 20px; margin-bottom: 20px;">
+                            <h2 style="text-align: center;">Customer Card</h2>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="width: 30%;">
+                                        <strong>Name:</strong>
+                                    </td>
+                                    <td style="width: 70%;">
+                                        <t t-esc="doc.name" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Booking Code:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.booking_code" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Hotel:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.hotel_id.name" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Room:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.room_id.room_number" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Check-In Date:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.check_in_date" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Check-Out Date:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.check_out_date" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Status:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.status" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Payment Status:</strong>
+                                    </td>
+                                    <td>
+                                        <t t-esc="doc.payment_status" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
                 </div>
-            </t>
+            </main>
         </t>
     </template>
+
 </odoo>

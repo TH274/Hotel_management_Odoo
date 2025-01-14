@@ -12,6 +12,7 @@
                 <field name="check_in_date" />
                 <field name="check_out_date" />
                 <field name="status" />
+                <field name="payment_status" />
                 <field name="create_uid" optional="show" />
             </tree>
         </field>
@@ -51,7 +52,7 @@
                     </group>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_open_payment_wizard" type="object"
-                            string="Pay Order" 
+                            string="Pay Order"
                             class="oe_highlight" icon="fa-shopping-cart"
                             invisible="payment_status == 'paid'" />
                     </div>
@@ -70,10 +71,16 @@
         <field name="model">hotel.customer</field>
         <field name="arch" type="xml">
             <search string="Customers">
+                <separator string="Booking Status" />
                 <filter name="new_bookings" string="New Bookings"
                     domain="[('status', '=', 'new')]" />
                 <filter name="confirmed_bookings" string="Confirmed Bookings"
                     domain="[('status', '=', 'confirmed')]" />
+                <separator string="Payment Status" />
+                <filter name="unpaid" string="Unpaid"
+                    domain="[('payment_status', '=', 'unpaid')]" />
+                <filter name="paid" string="Paid"
+                    domain="[('payment_status', '=', 'paid')]" />
 
                 <group expand="1" string="Group By">
                     <filter name="group_by_hotel" string="Hotel" context="{'group_by': 'hotel_id'}" />
@@ -92,18 +99,34 @@
                 <searchpanel>
                     <field name="hotel_id" string="Hotel" />
                     <field name="room_id" string="Room" />
+                    <field name="payment_status" string="Payment" />
                 </searchpanel>
             </search>
+        </field>
+    </record>
+
+    <record id="view_hotel_customer_calendar" model="ir.ui.view">
+        <field name="name">customer.calendar</field>
+        <field name="model">hotel.customer</field>
+        <field name="arch" type="xml">
+            <calendar string="Booking Calendar" date_start="check_in_date"
+                date_stop="check_out_date" color="status">
+                <field name="name" />
+                <field name="hotel_id" />
+                <field name="room_id" />
+                <field name="status" />
+            </calendar>
         </field>
     </record>
 
     <record id="action_hotel_customer" model="ir.actions.act_window">
         <field name="name">Customers</field>
         <field name="res_model">hotel.customer</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,calendar,form</field>
         <field name="view_ids"
             eval="[Command.clear(),
                                  (0,0,{'view_mode':'tree','view_id':ref('view_hotel_customer_tree')}),
+                                 (0,0,{'view_mode':'calendar','view_id':ref('view_hotel_customer_calendar')}),
                                  (0,0,{'view_mode':'form','view_id':ref('view_hotel_customer_form')})]" />
         <field name="search_view_id" ref="view_hotel_customer_search" />
         <field name="help" type="html">
