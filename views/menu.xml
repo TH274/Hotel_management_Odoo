@@ -18,13 +18,6 @@
         action="action_hotel_hotel"
         sequence="3"/>
     
-    <menuitem
-        id="hotel_service_menu"
-        name="Service Management"
-        action="action_hotel_service"
-        parent="hotel_management_menu"
-        sequence="4"/>
-    
     <!-- Customer Menu Item -->    
     <menuitem id="customer_management_menu" name="Customer Orders" parent="menu_hotel_root" sequence="2"/>
 
@@ -32,22 +25,23 @@
         name="Customers Booking Orders"
         parent="customer_management_menu"
         action="action_hotel_customer"
-        sequence="5"/>
+        sequence="4"/>
     
     <menuitem id="menu_customer_pending"
         name="Customers Pending Orders"
         parent="customer_management_menu"
         action="action_hotel_customer_pending"
-        sequence="6"/>
+        sequence="5"/>
 
-    <!-- Sales Menu Item -->
-    <menuitem id="sales_management_menu" name="Sales" parent="menu_hotel_root" sequence="3"/>
+    <!-- Services Menu Item -->
+    <menuitem id="service_management_menu" name="Service" parent="menu_hotel_root" sequence="3"/>
     
-    <menuitem id="menu_sales"
-        name="Sales"
-        parent="sales_management_menu"
-        action="action_hotel_sales"
-        sequence="7"/>
+    <menuitem
+        id="hotel_service_menu"
+        name="Product Management"
+        action="action_hotel_product"
+        parent="service_management_menu"
+        sequence="6"/>
 
     <menuitem id="menu_configuration" name="Configuration" sequence="100"
         parent="menu_hotel_root" />

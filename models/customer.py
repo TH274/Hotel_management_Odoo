@@ -21,7 +21,9 @@ class HotelCustomer(models.Model):
     check_out_date = fields.Date(string='Check-Out Date', required=True, tracking=True)
     status = fields.Selection([
         ('new', 'New'),
-        ('confirmed', 'Confirmed'),
+        ('reserved', 'Reserved'),
+        ('check_out','Check_out'),
+        ('done','Done'),
         ('cancelled', 'Cancelled'),
     ], string='Booking Status', default='new', tracking=True)
     total_amount = fields.Float(string='Total Amount', compute='_compute_total_amount', store=True)
@@ -73,26 +75,56 @@ class HotelCustomer(models.Model):
     def action_confirm(self):
         for record in self:
             if record.status == 'new':
-                record.status = 'confirmed'
+                record.status = 'reserved'
                 record.room_id.status = 'reserved'
                 return {
                     'effect': {
                         'fadeout': 'slow',
-                        'message': 'successfully booked',
+                        'message': 'Successfully Booked',
                         'type': 'rainbow_man',
                     }
                 }
             else:
                 raise ValidationError("Cannot be confirmed")
+            
+    def action_checkout(self):
+        for record in self:
+            if record.status == 'reserved':
+                record.status = 'check_out'
+                return {
+                    'effect': {
+                        'fadeout': 'slow',
+                        'message': 'Successfully Checked Out',
+                        'type': 'rainbow_man',
+                    }
+                }
+            else:
+                raise ValidationError("Cannot be checked out")
+
+    def action_done(self):
+        for record in self:
+            if record.status == 'check_out':
+                record.status = 'done'
+                record.room_id.status = 'available'
+                return {
+                    'effect': {
+                        'fadeout': 'slow',
+                        'message': 'Task completed successfully',
+                        'type': 'rainbow_man',
+                    }
+                }
+            else:
+                raise ValidationError("Cannot be checked out")
 
     def action_cancel(self):
         for record in self:
             if record.status != 'cancelled':
                 record.status = 'cancelled'
+                record.room_id.status = 'available'
                 return {
                     'effect': {
                         'fadeout': 'slow',
-                        'message': 'successfully cancelled',
+                        'message': 'Successfully Cancelled',
                         'type': 'rainbow_man',
                     }
                 }

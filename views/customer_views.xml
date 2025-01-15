@@ -26,10 +26,14 @@
                 <header>
                     <button name="action_confirm" string="Confirm" type="object"
                         invisible="status != 'new'" class="oe_highlight" />
+                    <button name="action_checkout" string="Check Out" type="object"
+                        invisible="status != 'reserved'" class="oe_highlight" />
+                    <button name="action_done" string="Done" type="object"
+                        invisible="status != 'check_out'" class="oe_highlight" />
                     <button name="action_cancel" string="Cancel" type="object"
-                        invisible="status == 'confirmed'" />
+                        invisible="status == 'done'" />
                     <field name="status" widget="statusbar"
-                        statusbar_visible="new,confirmed,cancelled" />
+                        statusbar_visible="new,reserved,check_out,done,cancelled" />
                 </header>
                 <sheet>
                     <group>
@@ -75,7 +79,11 @@
                 <filter name="new_bookings" string="New Bookings"
                     domain="[('status', '=', 'new')]" />
                 <filter name="confirmed_bookings" string="Confirmed Bookings"
-                    domain="[('status', '=', 'confirmed')]" />
+                    domain="[('status', '=', 'reserved')]" />
+                <filter name="confirmed_bookings" string="Checked out Bookings"
+                    domain="[('status', '=', 'check_out')]" />
+                <filter name="confirmed_bookings" string="Cancelled Bookings"
+                    domain="[('status', '=', 'cancelled')]" />
                 <separator string="Payment Status" />
                 <filter name="unpaid" string="Unpaid"
                     domain="[('payment_status', '=', 'unpaid')]" />
