@@ -172,48 +172,6 @@
         </field>
     </record>
 
-    <!-- Hotel Payment Wizard Form View -->
-    <record id="view_hotel_payment_wizard_form" model="ir.ui.view">
-        <field name="name">hotel.payment.wizard.form</field>
-        <field name="model">hotel.payment.wizard</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <field name="hotel_id" />
-                        <field name="room_id" />
-                        <field name="payment_amount" />
-                    </group>
-                    <footer>
-                        <button string="Confirm" type="object" name="action_confirm_payment"
-                            class="btn-primary" />
-                        <button string="Cancel" class="btn-secondary" special="cancel" />
-                    </footer>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="view_hotel_checkout_wizard_form" model="ir.ui.view">
-        <field name="name">hotel.checkout.wizard.form</field>
-        <field name="model">hotel.checkout.wizard</field>
-        <field name="arch" type="xml">
-            <form string="Checkout">
-                <sheet>
-                    <group>
-                        <field name="hotel_id" readonly="1" />
-                        <field name="room_id" readonly="1" />
-                        <field name="payment_amount" string="Amount to Pay" readonly="1" />
-                    </group>
-                    <footer>
-                        <button string="Confirm Checkout" type="object" name="action_confirm_checkout" class="btn-primary" />
-                        <button string="Cancel" type="object" class="btn-secondary" special="cancel" />
-                    </footer>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
     <!-- Report Action -->
     <record id="action_report_customer_card" model="ir.actions.report">
         <field name="name">Customer Card</field>
