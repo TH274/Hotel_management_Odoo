@@ -1,5 +1,6 @@
 import logging
 from odoo import models, fields, api, exceptions, _
+from odoo.exceptions import ValidationError
 from datetime import date
 
 _logger = logging.getLogger(__name__)
@@ -28,6 +29,12 @@ class HotelCustomer(models.Model):
     ], string='Booking Status', default='new', tracking=True)
     total_amount = fields.Float(string='Total Amount', compute='_compute_total_amount', store=True)
     tag_ids = fields.Many2many('customer.tag', string='Tags')
+    service_line_ids = fields.One2many(
+        'product.template', 
+        'customer_id', 
+        string="Services Availed",
+        help="List of services availed by the customer."
+    )
 
     @api.constrains('check_in_date', 'check_out_date')
     def _check_dates(self):
@@ -64,14 +71,20 @@ class HotelCustomer(models.Model):
         _logger.info('Created new booking with ID: %s and booking code: %s', record.id, record.booking_code)
         return record
 
-    @api.depends('room_id.price', 'check_in_date', 'check_out_date')
+    @api.depends('room_id.price', 'check_in_date', 'check_out_date', 'service_line_ids.total_cost')
     def _compute_total_amount(self):
         for record in self:
-            if record.check_in_date and record.check_out_date:
+            total_service_cost = sum(service.total_cost for service in record.service_line_ids)
+            room_cost = 0
+            if record.check_in_date and record.check_out_date and record.room_id:
                 duration = (record.check_out_date - record.check_in_date).days
-                record.total_amount = duration * record.room_id.price
-                _logger.debug('Computed total amount for booking %s: %s', record.id, record.total_amount)
+                room_cost = duration * record.room_id.price
 
+            record.total_amount = room_cost + total_service_cost
+            _logger.debug(
+                'Computed total amount for booking %s: Room Cost = %s, Service Cost = %s, Total = %s',
+                record.id, room_cost, total_service_cost, record.total_amount
+            )
     def action_confirm(self):
         for record in self:
             if record.status == 'new':
@@ -87,19 +100,25 @@ class HotelCustomer(models.Model):
             else:
                 raise ValidationError("Cannot be confirmed")
             
+
     def action_checkout(self):
         for record in self:
-            if record.status == 'reserved':
-                record.status = 'check_out'
-                return {
-                    'effect': {
-                        'fadeout': 'slow',
-                        'message': 'Successfully Checked Out',
-                        'type': 'rainbow_man',
-                    }
+            if record.status != 'reserved':
+                raise ValidationError("Only reservations with status 'Reserved' can be checked out.")
+
+            services = self.env['product.template'].search([('customer_id', '=', record.id)])
+            if services:
+                record.write({'service_line_ids': [(6, 0, services.ids)]})
+
+            record.status = 'check_out'
+
+            return {
+                'effect': {
+                    'fadeout': 'slow',
+                    'message': 'Successfully Checked Out',
+                    'type': 'rainbow_man',
                 }
-            else:
-                raise ValidationError("Cannot be checked out")
+            }
 
     def action_done(self):
         for record in self:

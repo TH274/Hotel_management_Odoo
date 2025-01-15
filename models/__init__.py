@@ -6,4 +6,3 @@ from . import hotel
 from . import product
 from . import employee_extension
 from . import room_notification
-from . import payment

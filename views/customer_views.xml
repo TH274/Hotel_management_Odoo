@@ -24,11 +24,11 @@
         <field name="arch" type="xml">
             <form string="Customer">
                 <header>
-                    <button name="action_confirm" string="Confirm" type="object"
+                    <button name="action_open_payment_wizard" string="Confirm Order"  type="object"
                         invisible="status != 'new'" class="oe_highlight" />
                     <button name="action_checkout" string="Check Out" type="object"
                         invisible="status != 'reserved'" class="oe_highlight" />
-                    <button name="action_done" string="Done" type="object"
+                    <button name="action_open_checkout_wizard" string="Confirm Checkout" type="object"
                         invisible="status != 'check_out'" class="oe_highlight" />
                     <button name="action_cancel" string="Cancel" type="object"
                         invisible="status == 'done'" />
@@ -48,18 +48,34 @@
                             <field name="tag_ids" widget="many2many_tags" />
                             <field name="check_in_date" />
                             <field name="check_out_date" />
-                            <field name="status" readonly="1" />
                             <field name="total_amount" readonly="1" />
                             <field name="payment_status" readonly="1" />
                             <field name="create_uid" />
                         </group>
                     </group>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_open_payment_wizard" type="object"
-                            string="Pay Order"
-                            class="oe_highlight" icon="fa-shopping-cart"
-                            invisible="payment_status == 'paid'" />
-                    </div>
+                    <notebook>
+                        <page string="Additional Services"
+                            invisible="status != 'check_out'">
+                            <field name="service_line_ids">
+                                <tree string="Services">
+                                    <field name="product_id" />
+                                    <field name="service_type" />
+                                    <field name="price_unit"/>
+                                    <field name="description" optional = "show"/>
+                                    <field name="duration" optional = "hide" />
+                                    <field name="total_cost" />
+                                </tree>
+                                <form string="Service Details">
+                                    <group>
+                                        <field name="product_id" />
+                                        <field name="service_type" />
+                                        <field name="duration" />
+                                        <field name="total_cost" />
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"
@@ -144,6 +160,7 @@
         </field>
     </record>
 
+    <!-- Server confirm bookings View -->
     <record id="action_server_confirm_bookings" model="ir.actions.server">
         <field name="name">Approve Bookings</field>
         <field name="model_id" ref="model_hotel_customer" />
@@ -155,6 +172,7 @@
         </field>
     </record>
 
+    <!-- Hotel Payment Wizard Form View -->
     <record id="view_hotel_payment_wizard_form" model="ir.ui.view">
         <field name="name">hotel.payment.wizard.form</field>
         <field name="model">hotel.payment.wizard</field>
@@ -170,6 +188,26 @@
                         <button string="Confirm" type="object" name="action_confirm_payment"
                             class="btn-primary" />
                         <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotel_checkout_wizard_form" model="ir.ui.view">
+        <field name="name">hotel.checkout.wizard.form</field>
+        <field name="model">hotel.checkout.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Checkout">
+                <sheet>
+                    <group>
+                        <field name="hotel_id" readonly="1" />
+                        <field name="room_id" readonly="1" />
+                        <field name="payment_amount" string="Amount to Pay" readonly="1" />
+                    </group>
+                    <footer>
+                        <button string="Confirm Checkout" type="object" name="action_confirm_checkout" class="btn-primary" />
+                        <button string="Cancel" type="object" class="btn-secondary" special="cancel" />
                     </footer>
                 </sheet>
             </form>

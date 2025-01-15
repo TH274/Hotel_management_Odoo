@@ -16,7 +16,7 @@ class HotelCustomer(models.Model):
 
     def action_open_payment_wizard(self):
         return {
-            'name': _('Paying Order'),
+            'name': _('Confirm Order'),
             'type': 'ir.actions.act_window',
             'res_model': 'hotel.payment.wizard',
             'view_mode': 'form',
@@ -28,7 +28,6 @@ class HotelCustomer(models.Model):
                 'default_payment_amount': self.total_amount,
             },
         }
-
 
 class HotelPaymentWizard(models.TransientModel):
     _name = 'hotel.payment.wizard'
@@ -47,15 +46,24 @@ class HotelPaymentWizard(models.TransientModel):
 
     def action_confirm_payment(self):
         booking = self.booking_id
+        if booking.status not in ['new', 'reserved']:
+            raise exceptions.ValidationError(_('Payment can only be made for bookings in "New" or "Reserved" status.'))
+
+        # Update payment information and change booking status to "reserved"
         booking.write({
             'payment_status': 'paid',
             'payment_date': datetime.now(),
             'payment_amount': self.payment_amount,
+            'status': 'reserved',
         })
+
+        if booking.room_id:
+            booking.room_id.write({'status': 'reserved'})
+
         return {
             'effect': {
                 'fadeout': 'slow',
-                'message': 'Order successfully Payed',
+                'message': 'Order successfully Paid and status updated to Reserved',
                 'type': 'rainbow_man',
             },
             'type': 'ir.actions.act_window_close'
