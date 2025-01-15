@@ -23,7 +23,8 @@ class HotelCustomer(models.Model):
     status = fields.Selection([
         ('new', 'New'),
         ('reserved', 'Reserved'),
-        ('check_out','Check_out'),
+        ('checkin','Checkin'),
+        ('checkout','Checkout'),
         ('done','Done'),
         ('cancelled', 'Cancelled'),
     ], string='Booking Status', default='new', tracking=True)
@@ -85,33 +86,30 @@ class HotelCustomer(models.Model):
                 'Computed total amount for booking %s: Room Cost = %s, Service Cost = %s, Total = %s',
                 record.id, room_cost, total_service_cost, record.total_amount
             )
-    def action_confirm(self):
-        for record in self:
-            if record.status == 'new':
-                record.status = 'reserved'
-                record.room_id.status = 'reserved'
-                return {
-                    'effect': {
-                        'fadeout': 'slow',
-                        'message': 'Successfully Booked',
-                        'type': 'rainbow_man',
-                    }
-                }
-            else:
-                raise ValidationError("Cannot be confirmed")
             
+    def action_checkin(self):
+        for record in self:
+            if record.status != 'reserved':
+                raise ValidationError("Only reservations with status 'Reserved' can be checked in.")
+            record.status = 'checkin'
+            return {
+                'effect': {
+                    'fadeout': 'slow',
+                    'message': 'Successfully Checked In',
+                    'type': 'rainbow_man',
+                }
+            }
 
     def action_checkout(self):
         for record in self:
-            if record.status != 'reserved':
-                raise ValidationError("Only reservations with status 'Reserved' can be checked out.")
+            if record.status != 'checkin':
+                raise ValidationError("Only reservations with status 'Checkin' can be checked out.")
 
             services = self.env['product.template'].search([('customer_id', '=', record.id)])
             if services:
                 record.write({'service_line_ids': [(6, 0, services.ids)]})
 
-            record.status = 'check_out'
-
+            record.status = 'checkout'
             return {
                 'effect': {
                     'fadeout': 'slow',
@@ -122,7 +120,7 @@ class HotelCustomer(models.Model):
 
     def action_done(self):
         for record in self:
-            if record.status == 'check_out':
+            if record.status == 'checkout':
                 record.status = 'done'
                 record.room_id.status = 'available'
                 return {

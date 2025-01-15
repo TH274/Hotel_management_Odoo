@@ -24,16 +24,19 @@
         <field name="arch" type="xml">
             <form string="Customer">
                 <header>
-                    <button name="action_open_payment_wizard" string="Confirm Order"  type="object"
+                    <button name="action_open_payment_wizard" string="Confirm Order" type="object"
                         invisible="status != 'new'" class="oe_highlight" />
-                    <button name="action_checkout" string="Check Out" type="object"
+                    <button name="action_checkin" string="Check In" type="object"
                         invisible="status != 'reserved'" class="oe_highlight" />
-                    <button name="action_open_checkout_wizard" string="Confirm Checkout" type="object"
-                        invisible="status != 'check_out'" class="oe_highlight" />
+                    <button name="action_checkout" string="Check Out" type="object"
+                        invisible="status != 'checkin'" class="oe_highlight" />
+                    <button name="action_open_checkout_wizard" string="Confirm Checkout"
+                        type="object"
+                        invisible="status != 'checkout'" class="oe_highlight" />
                     <button name="action_cancel" string="Cancel" type="object"
                         invisible="status == 'done'" />
                     <field name="status" widget="statusbar"
-                        statusbar_visible="new,reserved,check_out,done,cancelled" />
+                        statusbar_visible="new,reserved,checkin,checkout,done,cancelled" />
                 </header>
                 <sheet>
                     <group>
@@ -55,14 +58,14 @@
                     </group>
                     <notebook>
                         <page string="Additional Services"
-                            invisible="status != 'check_out'">
+                            invisible="status != 'checkout'">
                             <field name="service_line_ids">
-                                <tree string="Services">
+                                <tree string="Services" editable="botton">
                                     <field name="product_id" />
                                     <field name="service_type" />
-                                    <field name="price_unit"/>
-                                    <field name="description" optional = "show"/>
-                                    <field name="duration" optional = "hide" />
+                                    <field name="price_unit" />
+                                    <field name="description" optional="hide" />
+                                    <field name="duration" optional="show" />
                                     <field name="total_cost" />
                                 </tree>
                                 <form string="Service Details">

@@ -25,7 +25,9 @@
         "security/ir.model.access.csv",
 
         "data/sequence.xml",
-        "data/cron.xml",
+        "data/cron_unrented_room.xml",
+        "data/cron_checkin_date.xml",
+        "data/cron_checkout_date.xml",
         "data/mail_template_data.xml",
 
         "wizards/checkout_wizard_views.xml",
@@ -39,7 +41,7 @@
         "views/room_views.xml",
         "views/hotel_views.xml",
         "views/menu.xml",
-        
+
         "reports/report_customer.xml",
     ],
     'installable': True,
