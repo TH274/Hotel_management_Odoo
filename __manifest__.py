@@ -18,7 +18,7 @@
         'product',
         'web',
         'hr',
-        'sale'
+        'sale',
         ],
     'data': [
         "security/security.xml",

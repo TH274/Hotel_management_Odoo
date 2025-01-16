@@ -26,4 +26,3 @@ access_hotel_checkout_wizard_admin,access.hotel.checkout.wizard.admin,model_hote
 access_customer_tag_employee,access.customer.tag.employee,model_customer_tag,hotel_management.group_hotel_employee,1,1,1,0
 access_customer_tag_manager,access.customer.tag.manager,model_customer_tag,hotel_management.group_hotel_manager,1,0,0,0
 access_customer_tag_admin,access.customer.tag.admin,model_customer_tag,hotel_management.group_hotel_admin,1,1,1,1
-

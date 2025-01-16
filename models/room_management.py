@@ -8,7 +8,7 @@ class HotelRoom(models.Model):
     _name = 'hotel.room'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Hotel Room'
-    _rec_name = 'room_number' 
+    _rec_name = 'room_number'
 
     reference = fields.Char(string='Hotel Code', default=lambda self: _('New'))
     room_number = fields.Integer(string='Room Number', required=True, tracking=True)
@@ -29,7 +29,7 @@ class HotelRoom(models.Model):
     notes = fields.Text(string='Notes', tracking=True)
     reservation_ids = fields.One2many('hotel.customer', 'room_id', string='Reservations')
     last_reserved_date = fields.Date(string='Last Reserved Date', default=fields.Date.today, tracking=True)
-
+    product_template_id = fields.Many2one('product.template', string='Linked Product', readonly=True)
 
     @api.model
     def create(self, vals):

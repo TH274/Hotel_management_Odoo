@@ -1,5 +1,8 @@
 from odoo import models, fields, api, exceptions, _
 from datetime import date, datetime
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class HotelCustomer(models.Model):
     _inherit = 'hotel.customer'
@@ -47,7 +50,34 @@ class HotelCustomer(models.Model):
         def action_confirm_checkout(self):
             booking = self.booking_id
 
-            # Process checkout and mark payment as complete
+            sale_order = self.env['sale.order'].search([('origin', '=', booking.booking_code)], limit=1)
+            if not sale_order:
+                raise exceptions.ValidationError(_('No quotation found for this booking.'))
+
+            existing_product_lines = {line.product_id.id: line for line in sale_order.order_line}
+            new_order_lines = []
+
+            for service in booking.service_line_ids:
+                if service.product_id:
+                    product_id = service.product_id.id
+                    duration = service.duration
+                    if product_id in existing_product_lines:
+                        line = existing_product_lines[product_id]
+                        line.write({
+                            'product_uom_qty': duration, 
+                        })
+                    else:
+                        new_order_lines.append((0, 0, {
+                            'product_id': product_id,
+                            'product_uom_qty': duration,
+                            'price_unit': service.product_id.list_price,
+                            'name': service.product_id.name,
+                        }))
+
+            if new_order_lines:
+                sale_order.write({'order_line': new_order_lines})
+                _logger.info('Added new services to quotation during checkout for booking %s', booking.booking_code)
+
             booking.write({
                 'payment_status': 'paid',
                 'payment_date': datetime.now(),
@@ -61,8 +91,8 @@ class HotelCustomer(models.Model):
             return {
                 'effect': {
                     'fadeout': 'slow',
-                    'message': 'Payment successfully completed, and the booking is checked out.',
+                    'message': 'Payment successfully completed, quotation updated, and the booking is checked out.',
                     'type': 'rainbow_man',
                 },
-                'type': 'ir.actions.act_window_close'
+                'type': 'ir.actions.act_window_close',
             }

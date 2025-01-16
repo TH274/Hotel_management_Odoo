@@ -4,14 +4,9 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     name = fields.Char(default="New Service", required=True) 
-    
     service_type = fields.Selection([
-        ('room_service', 'Room Service'),
-        ('laundry', 'Laundry'),
-        ('spa', 'Spa'),
-        ('transport', 'Transport'),
-    ], string="Service Type", help="Type of service provided.")
-
+        ('manual', 'Manual'),
+    ], string="Service Type", default='manual', required=True)
     customer_id = fields.Many2one('hotel.customer', string="Customer", help="Customer availing the service.")
     product_id = fields.Many2one('product.product', string="Product", help="Reference to the product.")
     description = fields.Text(string="Service Description")
@@ -20,6 +15,7 @@ class ProductTemplate(models.Model):
     price_unit = fields.Float(string="Price Unit", help="Cost per unit of duration.")
     room_id = fields.Many2one('hotel.room', string="Room", help="Room associated with the service.")
     total_cost = fields.Float(string="Total Cost", compute="_compute_total_cost", store=True)
+    hotel_room_id = fields.Many2one('hotel.room', string='Hotel Room', readonly=True, help='Related hotel room for this product.')
 
     @api.depends('duration', 'price_unit')
     def _compute_total_cost(self):

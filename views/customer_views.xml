@@ -58,14 +58,14 @@
                     </group>
                     <notebook>
                         <page string="Additional Services"
-                            invisible="status != 'checkout'">
+                            invisible="not status in ('checkout', 'done', 'cancelled')">
                             <field name="service_line_ids">
                                 <tree string="Services" editable="botton">
                                     <field name="product_id" />
-                                    <field name="service_type" />
+                                    <field name="service_type" optional="hide" />
                                     <field name="price_unit" />
                                     <field name="description" optional="hide" />
-                                    <field name="duration" optional="show" />
+                                    <field name="duration"/>
                                     <field name="total_cost" />
                                 </tree>
                                 <form string="Service Details">
@@ -171,7 +171,7 @@
         <field name="state">code</field>
         <field name="code">
             if records:
-            records.action_confirm()
+            records.action_checkin()
         </field>
     </record>
 

@@ -104,11 +104,6 @@ class HotelCustomer(models.Model):
         for record in self:
             if record.status != 'checkin':
                 raise ValidationError("Only reservations with status 'Checkin' can be checked out.")
-
-            services = self.env['product.template'].search([('customer_id', '=', record.id)])
-            if services:
-                record.write({'service_line_ids': [(6, 0, services.ids)]})
-
             record.status = 'checkout'
             return {
                 'effect': {
