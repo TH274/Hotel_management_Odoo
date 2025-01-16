@@ -1,5 +1,7 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+import logging
 
+_logger = logging.getLogger(__name__)
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -25,9 +27,5 @@ class ProductTemplate(models.Model):
     @api.onchange('product_id')
     def _onchange_product_id(self):
         for record in self:
-            if record.product_id:
                 record.description = record.product_id.description_sale or record.product_id.name
                 record.price_unit = record.product_id.list_price
-            else:
-                record.description = ''
-                record.price_unit = 0.0

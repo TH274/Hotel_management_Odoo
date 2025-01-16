@@ -35,7 +35,6 @@
 
         "views/room_tag_views.xml",
         "views/customer_tag_views.xml",
-        "views/product_views.xml",
         "views/customer_views.xml",
         "views/customer_pending.xml",
         "views/room_views.xml",

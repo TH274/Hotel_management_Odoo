@@ -68,14 +68,6 @@
                                     <field name="duration"/>
                                     <field name="total_cost" />
                                 </tree>
-                                <form string="Service Details">
-                                    <group>
-                                        <field name="product_id" />
-                                        <field name="service_type" />
-                                        <field name="duration" />
-                                        <field name="total_cost" />
-                                    </group>
-                                </form>
                             </field>
                         </page>
                     </notebook>
