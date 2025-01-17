@@ -29,7 +29,7 @@
                         <page string="Customer">
                             <field name="reservation_ids" context="{'default_room_id': active_id}">
                                 <tree string="Reservations">
-                                    <field name="name" string="Customer Name" />
+                                    <field name="partner_id" string="Customer Name" />
                                     <field name="check_in_date" />
                                     <field name="check_out_date" />
                                     <field name="total_amount" />

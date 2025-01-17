@@ -33,16 +33,6 @@
         action="action_hotel_customer_pending"
         sequence="5"/>
 
-    <!-- Services Menu Item
-    <menuitem id="service_management_menu" name="Service" parent="menu_hotel_root" sequence="3"/>
-    
-    <menuitem
-        id="hotel_service_menu"
-        name="Product Management"
-        action="action_hotel_product"
-        parent="service_management_menu"
-        sequence="6"/> -->
-
     <menuitem id="menu_configuration" name="Configuration" sequence="100"
         parent="menu_hotel_root" />
     

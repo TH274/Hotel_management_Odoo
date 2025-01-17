@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="booking_code" optional="hidden" />
-                <field name="name" />
+                <field name="partner_id"/>
                 <field name="hotel_id" />
                 <field name="room_id" optional="show" />
                 <field name="check_in_date" />

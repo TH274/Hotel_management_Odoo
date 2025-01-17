@@ -10,7 +10,7 @@ class HotelCustomer(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Hotel Customer'
 
-    name = fields.Char(string='Customer Name', required=True, tracking=True)
+    partner_id = fields.Many2one('res.partner', string='Customer Name', required=True, tracking=True)
     booking_code = fields.Char(string='Booking Code', readonly=True, default=lambda self: _('New'))
     hotel_id = fields.Many2one('hotel.hotel', string='Hotel', required=True, tracking=True)
     room_id = fields.Many2one('hotel.room', string='Room', required=True, tracking=True,
@@ -48,13 +48,6 @@ class HotelCustomer(models.Model):
             if record.room_id.status != 'available':
                 _logger.error('Room %s is not available for booking %s', record.room_id.id, record.id)
                 raise exceptions.ValidationError(_('The selected room is not available.'))
-
-    @api.constrains('name')
-    def _check_name(self):
-        for record in self:
-            if len(record.name) < 3:
-                _logger.error('Invalid customer name for booking %s: name %s is too short', record.id, record.name)
-                raise exceptions.ValidationError(_('The customer name must be at least 3 characters long.'))
 
     @api.model
     def create(self, vals):
@@ -95,8 +88,8 @@ class HotelCustomer(models.Model):
                     'fadeout': 'slow',
                     'message': 'Successfully Checked In',
                     'type': 'rainbow_man',
+                    }
                 }
-            }
 
     def action_checkout(self):
         for record in self:
@@ -108,8 +101,8 @@ class HotelCustomer(models.Model):
                     'fadeout': 'slow',
                     'message': 'Successfully Checked Out',
                     'type': 'rainbow_man',
+                    }
                 }
-            }
 
     def action_done(self):
         for record in self:
@@ -124,7 +117,7 @@ class HotelCustomer(models.Model):
                     }
                 }
             else:
-                raise ValidationError("Cannot be checked out")
+                raise ValidationError("Cannot be done")
 
     def action_cancel(self):
         for record in self:

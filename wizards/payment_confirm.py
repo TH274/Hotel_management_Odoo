@@ -61,10 +61,10 @@ class HotelPaymentWizard(models.TransientModel):
         if not product_template or not product_template.exists():
             # Create a new product template for the room
             product_template = self.env['product.template'].create({
-                'name': f'Room {booking.room_id.room_number} - {booking.hotel_id.name}',
+                'name': f'Booking for Room {booking.room_id.room_number} - {booking.hotel_id.name}',
                 'type': 'service',
                 'list_price': booking.room_id.price,
-                'default_code': booking.room_id.room_number,
+                'default_code': booking.partner_id.name,
                 'description': _('Product created for room: %s' % booking.room_id.room_number),
                 'customer_id': booking.id,
             })
@@ -87,7 +87,7 @@ class HotelPaymentWizard(models.TransientModel):
 
         # Create a quotation in Sale module
         sale_order = self.env['sale.order'].create({
-            'partner_id': booking.create_uid.partner_id.id,
+            'partner_id': booking.partner_id.id,
             'origin': booking.booking_code,
             'order_line': [(0, 0, {
                 'product_id': product_template.product_variant_id.id,
