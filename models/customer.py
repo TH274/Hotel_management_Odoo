@@ -34,6 +34,25 @@ class HotelCustomer(models.Model):
         'product.template', 'customer_id', string="Services Availed",
         help="List of services availed by the customer."
     )
+    sale_order_ids = fields.One2many('sale.order', 'origin', string='Sale Orders')
+
+    @api.model
+    def create(self, vals):
+        _logger.debug('Creating a new booking with values: %s', vals)
+        if not vals.get('booking_code') or vals['booking_code'] == 'New':
+            if 'partner_id' in vals:
+                partner_id = vals['partner_id']
+                vals['booking_code'] = f"{partner_id}"
+            else:
+                vals['booking_code'] = self.env['ir.sequence'].next_by_code('hotel.customer') or _('New')
+        record = super().create(vals)
+        record.message_post(
+            body=_('A new booking has been created with code: %s' % record.booking_code),
+            subject=_('Booking Created'),
+            message_type='notification'
+        )
+        _logger.info('Created new booking with ID: %s and booking code: %s', record.id, record.booking_code)
+        return record
 
     @api.constrains('check_in_date', 'check_out_date')
     def _check_dates(self):
@@ -48,20 +67,6 @@ class HotelCustomer(models.Model):
             if record.room_id.status != 'available':
                 _logger.error('Room %s is not available for booking %s', record.room_id.id, record.id)
                 raise exceptions.ValidationError(_('The selected room is not available.'))
-
-    @api.model
-    def create(self, vals):
-        _logger.debug('Creating a new booking with values: %s', vals)
-        if not vals.get('booking_code') or vals['booking_code'] == 'New':
-            vals['booking_code'] = self.env['ir.sequence'].next_by_code('hotel.customer') or _('New')
-        record = super().create(vals)
-        record.message_post(
-            body=_('A new booking has been created with code: %s' % record.booking_code),
-            subject=_('Booking Created'),
-            message_type='notification'
-        )
-        _logger.info('Created new booking with ID: %s and booking code: %s', record.id, record.booking_code)
-        return record
 
     @api.depends('room_id.price', 'check_in_date', 'check_out_date', 'service_line_ids.total_cost')
     def _compute_total_amount(self):

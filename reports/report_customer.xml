@@ -10,78 +10,102 @@
         print_report_name="'Customer Card - %s' % object.name"
     />
 
+    <!-- Report Action -->
+    <record id="action_report_customer_card" model="ir.actions.report">
+        <field name="name">Customer Card</field>
+        <field name="model">hotel.customer</field>
+        <field name="report_name">hotel_management.report_customer</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="binding_model_id" ref="model_hotel_customer" />
+        <field name="binding_type">report</field>
+    </record>
+
     <template id="report_customer">
         <t t-call="web.external_layout">
             <main>
                 <div class="page">
                     <t t-foreach="docs" t-as="doc">
-                        <div style="border: 1px solid #000; padding: 20px; margin-bottom: 20px;">
-                            <h2 style="text-align: center;">Customer Card</h2>
-                            <table style="width: 100%; border-collapse: collapse;">
+                        <h2 style="text-align: center; color: #2c3e50; font-size: 35px; margin-bottom: 20px;">Booking Order</h2>
+                        <div style="border: 2px solid #34495e; padding: 20px; margin-bottom: 30px; border-radius: 10px;">
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;">
                                 <tr>
-                                    <td style="width: 30%;">
-                                        <strong>Name:</strong>
-                                    </td>
-                                    <td style="width: 70%;">
-                                        <t t-esc="doc.name" />
+                                    <td style="width: 30%; font-weight: bold; color: #2c3e50; padding: 10px;">Name:</td>
+                                    <td style="width: 70%;  padding: 10px;">
+                                        <t t-esc="doc.partner_id.name" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <strong>Booking Code:</strong>
-                                    </td>
-                                    <td>
-                                        <t t-esc="doc.booking_code" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Hotel:</strong>
-                                    </td>
-                                    <td>
+                                    <td style="font-weight: bold; color: #2c3e50; padding: 10px;">Hotel:</td>
+                                    <td style=" padding: 10px;">
                                         <t t-esc="doc.hotel_id.name" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <strong>Room:</strong>
-                                    </td>
-                                    <td>
+                                    <td style="font-weight: bold; color: #2c3e50; padding: 10px;">Room:</td>
+                                    <td style=" padding: 10px;">
                                         <t t-esc="doc.room_id.room_number" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <strong>Check-In Date:</strong>
-                                    </td>
-                                    <td>
+                                    <td style="font-weight: bold; color: #2c3e50; padding: 10px;">Check-In Date:</td>
+                                    <td style=" padding: 10px;">
                                         <t t-esc="doc.check_in_date" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <strong>Check-Out Date:</strong>
-                                    </td>
-                                    <td>
+                                    <td style="font-weight: bold; color: #2c3e50; padding: 10px;">Check-Out Date:</td>
+                                    <td style=" padding: 10px;">
                                         <t t-esc="doc.check_out_date" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <strong>Status:</strong>
-                                    </td>
-                                    <td>
-                                        <t t-esc="doc.status" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Payment Status:</strong>
-                                    </td>
-                                    <td>
+                                    <td style="font-weight: bold; color: #2c3e50; padding: 10px;">Payment Status:</td>
+                                    <td style=" padding: 10px;">
                                         <t t-esc="doc.payment_status" />
                                     </td>
                                 </tr>
+                            </table>
+                            <!-- Service Notebook Section -->
+                            <h3 style="margin-top: 20px; color: #2c3e50; font-size: 18px; border-bottom: 2px solid #34495e; padding-bottom: 5px;">Additional Services</h3>
+                            <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px;">
+                                <thead>
+                                    <tr style="background-color: #ecf0f1; text-align: left; color: #2c3e50;">
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Service</th>
+                                        <th style="padding: 10px; border: 1px solid #ddd;">Type</th>
+                                        <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Price</th>
+                                        <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Duration</th>
+                                        <th style="padding: 10px; border: 1px solid #ddd; text-align: right;">Total Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="doc.service_line_ids" t-as="service">
+                                        <tr style="">
+                                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                                <t t-esc="service.product_id.name" />
+                                            </td>
+                                            <td style="padding: 10px; border: 1px solid #ddd;">
+                                                <t t-esc="service.service_type" />
+                                            </td>
+                                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+                                                <t t-esc="service.price_unit" />
+                                            </td>
+                                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+                                                <t t-esc="service.duration" />
+                                            </td>
+                                            <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+                                                <t t-esc="service.total_cost" />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot>
+                                    <tr style="background-color: #ecf0f1; font-weight: bold; color: #2c3e50;">
+                                        <td colspan="4" style="padding: 10px; border: 1px solid #ddd; text-align: right;">Total Amount:</td>
+                                        <td style="padding: 10px; border: 1px solid #ddd; text-align: right;">
+                                            <t t-esc="doc.total_amount" />
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </t>
@@ -89,5 +113,4 @@
             </main>
         </t>
     </template>
-
 </odoo>
