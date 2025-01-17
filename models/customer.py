@@ -34,8 +34,7 @@ class HotelCustomer(models.Model):
         'product.template', 'customer_id', string="Services Availed",
         help="List of services availed by the customer."
     )
-    sale_order_ids = fields.One2many('sale.order', 'origin', string='Sale Orders')
-
+    
     @api.model
     def create(self, vals):
         _logger.debug('Creating a new booking with values: %s', vals)

@@ -15,7 +15,7 @@
         <field name="name">Customer Card</field>
         <field name="model">hotel.customer</field>
         <field name="report_name">hotel_management.report_customer</field>
-        <field name="report_type">qweb-pdf</field>
+        <field name="report_type">qweb-html</field>
         <field name="binding_model_id" ref="model_hotel_customer" />
         <field name="binding_type">report</field>
     </record>
@@ -56,6 +56,12 @@
                                     <td style="font-weight: bold; color: #2c3e50; padding: 10px;">Check-Out Date:</td>
                                     <td style=" padding: 10px;">
                                         <t t-esc="doc.check_out_date" />
+                                    </td>
+                                </tr>
+                                    <tr>
+                                    <td style="font-weight: bold; color: #2c3e50; padding: 10px;">Price per night:</td>
+                                    <td style=" padding: 10px;">
+                                        <t t-esc="doc.room_id.price" />
                                     </td>
                                 </tr>
                                 <tr>
