@@ -60,16 +60,16 @@ class HotelCustomer(models.Model):
             for service in booking.service_line_ids:
                 if service.product_id:
                     product_id = service.product_id.id
-                    duration = service.duration
+                    quantity = service.quantity
                     if product_id in existing_product_lines:
                         line = existing_product_lines[product_id]
                         line.write({
-                            'product_uom_qty': duration, 
+                            'product_uom_qty': quantity, 
                         })
                     else:
                         new_order_lines.append((0, 0, {
                             'product_id': product_id,
-                            'product_uom_qty': duration,
+                            'product_uom_qty': quantity,
                             'price_unit': service.product_id.list_price,
                             'name': service.product_id.name,
                         }))

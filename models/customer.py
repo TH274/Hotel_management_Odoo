@@ -31,7 +31,7 @@ class HotelCustomer(models.Model):
     total_amount = fields.Float(string='Total Amount', compute='_compute_total_amount', store=True)
     tag_ids = fields.Many2many('customer.tag', string='Tags')
     service_line_ids = fields.One2many(
-        'product.template', 'customer_id', string="Services Availed",
+        'hotel.service.line', 'customer_id', string="Services Availed",
         help="List of services availed by the customer."
     )
     

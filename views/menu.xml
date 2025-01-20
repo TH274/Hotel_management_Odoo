@@ -4,38 +4,40 @@
         web_icon="hotel_management,static/description/icon.png" />
 
     <!-- Hotel Management Menu Item -->
-    <menuitem id="hotel_management_menu" name="Hotel Management" parent="menu_hotel_root" sequence="1"/>
+    <menuitem id="hotel_management_menu" name="Hotel Management" parent="menu_hotel_root"
+        sequence="1" />
 
     <menuitem id="hotel_room_menu"
         name="Room Management"
-        parent="hotel_management_menu" 
+        parent="hotel_management_menu"
         action="action_hotel_room"
-        sequence="2"/>
-    
-    <menuitem id="menu_hotel" 
-        name="Hotels" 
-        parent="hotel_management_menu" 
+        sequence="2" />
+
+    <menuitem id="menu_hotel"
+        name="Hotels"
+        parent="hotel_management_menu"
         action="action_hotel_hotel"
-        sequence="3"/>
-    
-    <!-- Customer Menu Item -->    
-    <menuitem id="customer_management_menu" name="Customer Orders" parent="menu_hotel_root" sequence="2"/>
+        sequence="3" />
+
+    <!-- Customer Menu Item -->
+    <menuitem id="customer_management_menu" name="Customer Orders" parent="menu_hotel_root"
+        sequence="2" />
 
     <menuitem id="menu_customer"
         name="Customers Booking Orders"
         parent="customer_management_menu"
         action="action_hotel_customer"
-        sequence="4"/>
-    
+        sequence="4" />
+
     <menuitem id="menu_customer_pending"
         name="Customers Pending Orders"
         parent="customer_management_menu"
         action="action_hotel_customer_pending"
-        sequence="5"/>
+        sequence="5" />
 
     <menuitem id="menu_configuration" name="Configuration" sequence="100"
         parent="menu_hotel_root" />
-    
+
     <menuitem id="menu_customer_tag" name="Customer Tags" parent="menu_configuration"
         action="action_customer_tag" />
 

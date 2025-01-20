@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form string="Room Form">
                 <field name="status" widget="statusbar"
-                    statusbar_visible="available,reserved" />
+                    statusbar_visible="available,occupied,maintenance" />
                 <sheet>
                     <group>
                         <group>
@@ -89,7 +89,7 @@
                                         t-att-style="
                                         'display: inline-block; padding: 5px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; color: #fff;' +
                                         (record.status.raw_value === 'available' ? 'background-color: #28a745;' :
-                                        record.status.raw_value === 'reserved' ? 'background-color: #ffc107;' :
+                                        record.status.raw_value === 'occupied' ? 'background-color: #ffc107;' :
                                         'background-color: #dc3545;')">
                                         <field name="status" />
                                     </span>
@@ -131,9 +131,10 @@
             <search string="Search Rooms">
                 <filter name="available" string="Available"
                     domain="[('status', '=', 'available')]" />
-                <filter name="reserved" string="Reserved"
-                    domain="[('status', '=', 'reserved')]" />
-
+                <filter name="occupied" string="Occupied"
+                    domain="[('status', '=', 'occupied')]" />
+                <filter name="maintenance" string="Maintenance"
+                    domain="[('status', '=', 'maintenance')]" />
                 <group expand="1" string="Group By">
                     <filter name="group_by_room_type" string="Room Type"
                         context="{'group_by': 'room_type'}" />

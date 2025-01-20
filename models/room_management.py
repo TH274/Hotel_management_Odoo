@@ -13,7 +13,7 @@ class HotelRoom(models.Model):
     reference = fields.Char(string='Hotel Code', default=lambda self: _('New'))
     room_number = fields.Integer(string='Room Number', required=True, tracking=True)
     room_type = fields.Selection(
-        [('single', 'Single'), ('double', 'Double')],
+        [('single', 'Single'), ('double', 'Double'), ('suite', 'Suite')],
         string='Room Type', required=True, tracking=True
     )
     hotel_id = fields.Many2one('hotel.hotel', string='Hotel', required=True, tracking=True)
@@ -23,7 +23,7 @@ class HotelRoom(models.Model):
     tag_ids = fields.Many2many('room.tag', string='Features')
     price = fields.Float(string='Price per Night', required=True, tracking=True)
     status = fields.Selection(
-        [('available', 'Available'), ('reserved', 'Reserved')],
+        [('available', 'Available'), ('occupied', 'Occupied'), ('maintenance', 'Maintenance')],
         string='Status', default='available', tracking=True
     )
     notes = fields.Text(string='Notes', tracking=True)
@@ -49,17 +49,23 @@ class HotelRoom(models.Model):
             self.capacity = 1
         elif self.room_type == 'double':
             self.capacity = 2
+        elif self.room_type == 'suite':
+            self.capacity = 4
         else:
-            self.capacity = 1
+            self.capacity = 0
         _logger.debug('Room capacity set to: %s', self.capacity)
 
     def action_available(self):
         _logger.info('Setting room %s to available', self.id)
         self.write({'status': 'available'})
 
-    def action_reserved(self):
-        _logger.info('Setting room %s to reserved', self.id)
-        self.write({'status': 'reserved'})
+    def action_occupied(self):
+        _logger.info('Setting room %s to occupied', self.id)
+        self.write({'status': 'occupied'})
+    
+    def action_maintenance(self):
+        _logger.info('Setting room %s to maintenance', self.id)
+        self.write({'status': 'maintenance'})
 
     @api.constrains('room_number')
     def _check_room_number(self):

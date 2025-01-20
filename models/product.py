@@ -6,9 +6,6 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     name = fields.Char(default="New Service", required=True) 
-    service_type = fields.Selection([
-        ('manual', 'Manual'),
-    ], string="Service Type", default='manual', required=True)
     customer_id = fields.Many2one('hotel.customer', string="Customer", help="Customer availing the service.")
     product_id = fields.Many2one('product.product', string="Product", help="Reference to the product.")
     description = fields.Text(string="Service Description")

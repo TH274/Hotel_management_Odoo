@@ -3,6 +3,7 @@ from . import customer
 from . import room_management
 from . import tags
 from . import hotel
+from . import service_line
 from . import product
 from . import employee_extension
 from . import room_notification

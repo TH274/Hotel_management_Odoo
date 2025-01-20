@@ -1,0 +1,38 @@
+.o_customer_portal {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+.o_customer_portal table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.o_customer_portal th, .o_customer_portal td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.o_customer_portal th {
+    background-color: #007bff;
+    color: white;
+}
+
+.o_customer_portal button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.o_customer_portal button.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.o_customer_portal button.btn-success {
+    background-color: #28a745;
+    color: white;
+}

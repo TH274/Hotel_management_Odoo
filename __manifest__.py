@@ -33,6 +33,7 @@
         "wizards/checkout_wizard_views.xml",
         "wizards/confirm_wizard_views.xml",
 
+        "views/customer_portal.xml",
         "views/room_tag_views.xml",
         "views/customer_tag_views.xml",
         "views/customer_views.xml",
@@ -43,6 +44,14 @@
 
         "reports/report_customer.xml",
     ],
+    'assets': {
+        'web.assets_backend': [
+            'hotel_management/static/src/js/customer_portal.js',
+        ],
+        'web.assets_qweb': [
+            'hotel_management/static/src/xml/booking_template.xml',
+        ],
+    },
     'installable': True,
     'application': True,
     'auto_install': False,

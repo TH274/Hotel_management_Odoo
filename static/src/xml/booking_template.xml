@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="customer_portal_template" name="Customer Portal">
+        <t t-name="hotel_management.CustomerPortal">
+            <div class="o_customer_portal">
+                <h2>Book Your Stay</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Room Number</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="state.availableRooms" t-as="room">
+                            <tr>
+                                <td>
+                                    <t t-esc="room.room_number" />
+                                </td>
+                                <td>
+                                    <t t-esc="room.room_type" />
+                                </td>
+                                <td>
+                                    <t t-esc="room.price" />
+                                </td>
+                                <td>
+                                    <button t-on-click="() => selectRoom(room)"
+                                        class="btn btn-primary">
+                                        Select
+                                    </button>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <div>
+                    <h3>Selected Room: <t t-esc="state.selectedRoom?.room_number || 'None'" /></h3>
+                    <label>Check-in Date:</label>
+                    <input type="date" t-model="state.checkInDate" />
+                    <label>Check-out Date:</label>
+                    <input type="date" t-model="state.checkOutDate" />
+                    <button class="btn btn-success" t-on-click="bookRoom">Book Now</button>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

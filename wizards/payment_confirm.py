@@ -65,7 +65,6 @@ class HotelPaymentWizard(models.TransientModel):
                 'type': 'service',
                 'list_price': booking.room_id.price,
                 'default_code': booking.partner_id.name,
-                'description': _('Product created for room: %s' % booking.room_id.room_number),
                 'customer_id': booking.id,
             })
             # Link the newly created product template to the room
@@ -81,9 +80,6 @@ class HotelPaymentWizard(models.TransientModel):
             'payment_amount': self.payment_amount,
             'status': 'reserved',
         })
-
-        # Update room status
-        booking.room_id.write({'status': 'reserved'})
 
         # Create a quotation in Sale module
         sale_order = self.env['sale.order'].create({
@@ -112,4 +108,3 @@ class HotelPaymentWizard(models.TransientModel):
             },
             'type': 'ir.actions.act_window_close'
         }
-
