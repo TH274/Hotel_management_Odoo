@@ -31,3 +31,6 @@ access_hotel_service_line_employee,access_hotel_service_line_employee,model_hote
 access_hotel_service_line_manager,access_hotel_service_line_manager,model_hotel_service_line,hotel_management.group_hotel_manager,1,1,1,1
 access_hotel_service_line_admin,access_hotel_service_line_admin,model_hotel_service_line,hotel_management.group_hotel_admin,1,1,1,1
 
+access_hotel_room_portal,Hotel Room Portal,model_hotel_room,base.group_portal,1,0,0,0
+access_hotel_customer_portal,Hotel Customer Portal,model_hotel_customer,base.group_portal,1,0,1,0
+access_hotel_service_line_portal,Hotel Service Line Portal,model_hotel_service_line,base.group_portal,1,0,1,0
