@@ -49,31 +49,37 @@ class HotelPaymentWizard(models.TransientModel):
         if booking.status not in ['new', 'reserved']:
             raise exceptions.ValidationError(_('Payment can only be made for bookings in "New" or "Reserved" status.'))
 
-        if not booking.room_id:
-            raise exceptions.ValidationError(_('Room information is missing for the booking.'))
+        product = self.env['product.product'].search([
+            ('default_code', '=', f'ROOM-{booking.room_id.room_number}'),
+            ('detailed_type', '=', 'service')
+        ], limit=1)
 
-        check_in_date = fields.Date.from_string(self.booking_id.check_in_date)
-        check_out_date = fields.Date.from_string(self.booking_id.check_out_date)
+        if not product:
+            product = self.env['product.product'].create({
+                'name': f'Room {booking.room_id.room_number} - {booking.hotel_id.name}',
+                'default_code': f'ROOM-{booking.room_id.room_number}',
+                'detailed_type': 'service',
+                'list_price': booking.room_id.price,
+            })
+
+        # Calculate duration
+        check_in_date = fields.Date.from_string(booking.check_in_date)
+        check_out_date = fields.Date.from_string(booking.check_out_date)
         duration_days = (check_out_date - check_in_date).days
 
-        # Ensure a product template exists for the room
-        product_template = booking.room_id.product_template_id
-        if not product_template or not product_template.exists():
-            # Create a new product template for the room
-            product_template = self.env['product.template'].create({
-                'name': f'Booking for Room {booking.room_id.room_number} - {booking.hotel_id.name}',
-                'type': 'service',
-                'list_price': booking.room_id.price,
-                'default_code': booking.partner_id.name,
-                'customer_id': booking.id,
-            })
-            # Link the newly created product template to the room
-            booking.room_id.write({'product_template_id': product_template.id})
+        # Create sale order
+        sale_order = self.env['sale.order'].create({
+            'partner_id': booking.partner_id.id,
+            'origin': booking.booking_code,
+            'order_line': [(0, 0, {
+                'product_id': product.id,
+                'product_uom_qty': duration_days,
+                'price_unit': product.list_price,
+                'name': f"Room {booking.room_id.room_number} ({duration_days} nights)",
+            })]
+        })
 
-        if not product_template.exists():
-            raise exceptions.ValidationError(_('The product associated with this room does not exist or has been deleted.'))
-
-        # Update payment information and booking status
+        # Update booking status
         booking.write({
             'payment_status': 'paid',
             'payment_date': datetime.now(),
@@ -81,29 +87,21 @@ class HotelPaymentWizard(models.TransientModel):
             'status': 'reserved',
         })
 
-        # Create a quotation in Sale module
-        sale_order = self.env['sale.order'].create({
-            'partner_id': booking.partner_id.id,
-            'origin': booking.booking_code,
-            'order_line': [(0, 0, {
-                'product_id': product_template.product_variant_id.id,
-                'product_uom_qty': duration_days,
-                'price_unit': product_template.list_price,
-                'name': product_template.name,
-            })],
-        })
-
-        # Log the action
-        booking.message_post(
-            body=_('Quotation created/updated in Sales module with ID: %s' % sale_order.id),
-            subject=_('Quotation Processed'),
-            message_type='notification'
-        )
+        # Add services to sale order
+        for service in booking.service_line_ids:
+            sale_order.write({
+                'order_line': [(0, 0, {
+                    'product_id': service.product_id.id,
+                    'product_uom_qty': service.quantity,
+                    'price_unit': service.product_id.list_price,
+                    'name': service.product_id.name,
+                })]
+            })
 
         return {
             'effect': {
                 'fadeout': 'slow',
-                'message': 'Payment successfully processed, product created, and quotation updated.',
+                'message': 'Payment processed and quotation created successfully!',
                 'type': 'rainbow_man',
             },
             'type': 'ir.actions.act_window_close'

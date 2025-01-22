@@ -29,8 +29,7 @@ class HotelRoom(models.Model):
     notes = fields.Text(string='Notes', tracking=True)
     reservation_ids = fields.One2many('hotel.customer', 'room_id', string='Reservations')
     last_reserved_date = fields.Date(string='Last Reserved Date', default=fields.Date.today, tracking=True)
-    product_template_id = fields.Many2one('product.template', string='Linked Product', readonly=True)
-
+    
     @api.model
     def create(self, vals):
         _logger.debug('Creating a new hotel room with values: %s', vals)
