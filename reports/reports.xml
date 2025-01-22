@@ -1,0 +1,18 @@
+<!-- views/reports.xml -->
+<odoo>
+    <record id="action_room_availability_report" model="ir.actions.report">
+        <field name="name">Room Availability Report</field>
+        <field name="model">hotel.room.availability.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hotel_management.room_availability_report_template</field>
+        <field name="print_report_name">'Room Availability Report - %s' % (object.date_from)</field>
+    </record>
+
+    <record id="action_revenue_report" model="ir.actions.report">
+        <field name="name">Revenue Report</field>
+        <field name="model">hotel.revenue.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hotel_management.revenue_report_template</field>
+        <field name="print_report_name">'Revenue Report - %s' % (object.report_type)</field>
+    </record>
+</odoo>

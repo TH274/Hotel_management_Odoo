@@ -1,0 +1,169 @@
+<!-- views/report_templates.xml -->
+<odoo>
+    <template id="room_availability_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="container"
+                    style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333;">
+                    <!-- Header -->
+                    <div
+                        style="border-bottom: 2px solid #007BFF; padding-bottom: 15px; margin-bottom: 25px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h1 style="color: #007BFF; margin: 0; font-size: 28px;">Room
+                                    Availability Report</h1>
+                                <p style="margin: 5px 0 0 0; color: #666;">
+                                    <span style="font-weight: bold;">Period:</span> 
+                                    <t
+                                        t-esc="doc.date_from" /> to <t t-esc="doc.date_to" />
+                                </p>
+                            </div>
+                            <div style="text-align: right;">
+                                <img src="/hotel_management/static/description/icon.png"
+                                    style="max-height: 60px;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                        <thead>
+                            <tr style="background-color: #007BFF; color: white;">
+                                <th style="padding: 12px; text-align: left;">Room Number</th>
+                                <th style="padding: 12px; text-align: left;">Type</th>
+                                <th style="padding: 12px; text-align: right;">Price/Night</th>
+                                <th style="padding: 12px; text-align: center;">Capacity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.get_available_rooms()" t-as="room">
+                                <tr style="border-bottom: 1px solid #ddd;">
+                                    <td style="padding: 12px; font-weight: 500;">
+                                        <t t-esc="room.room_number" />
+                                    </td>
+                                    <td style="padding: 12px; text-transform: capitalize;">
+                                        <t t-esc="room.room_type" />
+                                    </td>
+                                    <td style="padding: 12px; text-align: right;">$<t
+                                            t-esc="'{:,.2f}'.format(room.price)" /></td>
+                                    <td style="padding: 12px; text-align: center;">
+                                        <t t-esc="room.capacity" />
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr t-if="not doc.get_available_rooms()">
+                                <td colspan="4"
+                                    style="padding: 20px; text-align: center; color: #666;">
+                                    No available rooms found for this period
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Footer -->
+                    <div
+                        style="border-top: 2px solid #007BFF; padding-top: 15px; color: #666; font-size: 12px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>Generated on: <t
+                                    t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')" /></div>
+                            <div>Page <span class="page" /> of <span class="topage" /></div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="revenue_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="container"
+                    style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333;">
+                    <!-- Header -->
+                    <div
+                        style="border-bottom: 2px solid #28a745; padding-bottom: 15px; margin-bottom: 25px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h1 style="color: #28a745; margin: 0; font-size: 28px;">Revenue
+                                    Report</h1>
+                                <p style="margin: 5px 0 0 0; color: #666;">
+                                    <span style="font-weight: bold;">Period:</span> 
+                                    <t
+                                        t-esc="doc.date_from" /> to <t t-esc="doc.date_to" />
+                                </p>
+                                <p style="margin: 5px 0 0 0; color: #666;">
+                                    <span style="font-weight: bold;">Report Type:</span>
+                                    <t t-esc="doc.report_type.capitalize()" />
+                                </p>
+                            </div>
+                            <div style="text-align: right;">
+                                <img src="/hotel_management/static/description/icon.png"
+                                    style="max-height: 60px;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                        <thead>
+                            <tr style="background-color: #28a745; color: white;">
+                                <th t-if="doc.report_type in ['room', 'customer']"
+                                    style="padding: 12px; text-align: left;">Name</th>
+                                <th t-if="doc.report_type == 'room'"
+                                    style="padding: 12px; text-align: left;">Type</th>
+                                <th style="padding: 12px; text-align: right;">Total Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.get_revenue_data()" t-as="item">
+                                <tr style="border-bottom: 1px solid #ddd;">
+                                    <td t-if="'name' in item"
+                                        style="padding: 12px; font-weight: 500;">
+                                        <t t-esc="item['name']" />
+                                    </td>
+                                    <td t-if="'type' in item"
+                                        style="padding: 12px; text-transform: capitalize;">
+                                        <t t-esc="item['type']" />
+                                    </td>
+                                    <td style="padding: 12px; text-align: right;">$<t
+                                            t-esc="'{:,.2f}'.format(item['total'])" /></td>
+                                </tr>
+                            </t>
+                            <tr t-if="not doc.get_revenue_data()">
+                                <td colspan="3"
+                                    style="padding: 20px; text-align: center; color: #666;">
+                                    No revenue data found for this period
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Summary -->
+                    <div
+                        style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 25px;">
+                        <div style="display: flex; justify-content: flex-end;">
+                            <div style="text-align: right;">
+                                <h3 style="margin: 0 0 10px 0; color: #28a745;">Total Revenue</h3>
+                                <div style="font-size: 24px; font-weight: bold; color: #28a745;"> $<t
+                                        t-esc="'{:,.2f}'.format(sum(item.get('total', 0) for item in doc.get_revenue_data() or []))" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div
+                        style="border-top: 2px solid #28a745; padding-top: 15px; color: #666; font-size: 12px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>Generated on: <t
+                                    t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')" /></div>
+                            <div>Page <span class="page" /> of <span class="topage" /></div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

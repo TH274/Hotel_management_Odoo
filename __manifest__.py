@@ -32,6 +32,11 @@
         "wizards/checkout_wizard_views.xml",
         "wizards/confirm_wizard_views.xml",
 
+        "reports/report_customer.xml",
+        'reports/report_templates.xml',
+        'reports/reports.xml',
+        'reports/report_wizard.xml',
+
         "views/room_tag_views.xml",
         "views/customer_tag_views.xml",
         "views/customer_views.xml",
@@ -39,8 +44,6 @@
         "views/room_views.xml",
         "views/hotel_views.xml",
         "views/menu.xml",
-        
-        "reports/report_customer.xml",
     ],
     'installable': True,
     'application': True,

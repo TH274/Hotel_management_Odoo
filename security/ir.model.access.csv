@@ -34,3 +34,11 @@ access_hotel_service_line_admin,access_hotel_service_line_admin,model_hotel_serv
 access_hotel_room_portal,Hotel Room Portal,model_hotel_room,base.group_portal,1,0,0,0
 access_hotel_customer_portal,Hotel Customer Portal,model_hotel_customer,base.group_portal,1,0,1,0
 access_hotel_service_line_portal,Hotel Service Line Portal,model_hotel_service_line,base.group_portal,1,0,1,0
+
+access_hotel_room_availability_report_employee,access.hotel.room.availability.report.employee,model_hotel_room_availability_report,hotel_management.group_hotel_employee,1,1,1,1
+access_hotel_room_availability_report_manager,access.hotel.room.availability.report.manager,model_hotel_room_availability_report,hotel_management.group_hotel_manager,1,1,1,1
+access_hotel_room_availability_report_admin,access.hotel.room.availability.report.admin,model_hotel_room_availability_report,hotel_management.group_hotel_admin,1,1,1,1
+
+access_hotel_revenue_report_manager,access.hotel.revenue.report.manager,model_hotel_revenue_report,hotel_management.group_hotel_manager,1,1,1,1
+access_hotel_revenue_report_admin,access.hotel.revenue.report.admin,model_hotel_revenue_report,hotel_management.group_hotel_admin,1,1,1,1
+access_hotel_revenue_report_employee,access.hotel.revenue.report.employee,model_hotel_revenue_report,hotel_management.group_hotel_employee,1,1,1,1

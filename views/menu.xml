@@ -43,4 +43,11 @@
 
     <menuitem id="menu_room_tag" name="Room Tags" parent="menu_configuration"
         action="action_room_tag" />
+
+    <menuitem id="menu_reports" name="Reports" parent="menu_hotel_root" sequence="6" />
+    
+    <menuitem id="menu_room_availability_report" name="Room Availability" parent="menu_reports"
+        action="action_room_availability_report_wizard" />
+    <menuitem id="menu_revenue_report" name="Revenue Report" parent="menu_reports"
+        action="action_revenue_report_wizard" />
 </odoo>
