@@ -56,7 +56,7 @@ class RevenueReport(models.TransientModel):
     def action_print_report(self):
         return self.env.ref('hotel_management.action_revenue_report').report_action(self)
 
-   def get_revenue_data(self):
+    def get_revenue_data(self):
         self.ensure_one()
         domain = [
             ('payment_status', '=', 'paid'),
