@@ -84,7 +84,7 @@ class HotelPaymentWizard(models.TransientModel):
             'payment_status': 'paid',
             'payment_date': datetime.now(),
             'payment_amount': self.payment_amount,
-            'status': 'reserved',
+            'status': 'occupied',
         })
 
         # Add services to sale order

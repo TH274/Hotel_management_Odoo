@@ -17,7 +17,7 @@ class HotelCustomer(models.Model):
         domain="[('hotel_id', '=', hotel_id), ('room_type', '=', room_type), ('status', '=', 'available')]",
         context={'show_room_number': True}
     )
-    room_type = fields.Selection([('single', 'Single'), ('double', 'Double')], string='Room Type', tracking=True)
+    room_type = fields.Selection([('single', 'Single'), ('double', 'Double'), ('suite', 'Suite')], string='Room Type', tracking=True)
     check_in_date = fields.Date(string='Check-In Date', required=True, tracking=True)
     check_out_date = fields.Date(string='Check-Out Date', required=True, tracking=True)
     status = fields.Selection([

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Products for Services -->
+    <record id="product_spa" model="product.product">
+        <field name="name">Spa Session</field>
+        <field name="detailed_type">product</field>
+        <field name="type">product</field>
+        <field name="lst_price">50.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_breakfast" model="product.product">
+        <field name="name">Breakfast</field>
+        <field name="detailed_type">product</field>
+        <field name="type">product</field>
+        <field name="lst_price">15.0</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <!-- POS Products -->
+    <record id="product_minibar" model="product.product">
+        <field name="name">Minibar</field>
+        <field name="available_in_pos">True</field>
+        <field name="lst_price">20.0</field>
+        <field name="type">consu</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <!-- Hotel -->
+    <record id="demo_hotel" model="hotel">
+        <field name="name">Grand Demo Hotel</field>
+        <field name="address">123 Demo Street</field>
+    </record>
+
+    <!-- Rooms -->
+    <record id="room_101" model="hotel.room">
+        <field name="name">101</field>
+        <field name="hotel_id" ref="demo_hotel"/>
+        <field name="price">100.0</field>
+        <field name="status">available</field>
+    </record>
+
+    <!-- Customer -->
+    <record id="demo_customer" model="hotel.customer">
+        <field name="name">John Doe</field>
+        <field name="email">john@demo.com</field>
+        <field name="phone">+123456789</field>
+        <field name="room_id" ref="room_101"/>
+    </record>
+
+    <!-- Service Lines (Other Services) -->
+    <record id="service_line_spa" model="other.hotel.service.line">
+        <field name="customer_id" ref="demo_customer"/>
+        <field name="product_id" ref="product_spa"/>
+        <field name="quantity">2</field>
+    </record>
+</odoo>

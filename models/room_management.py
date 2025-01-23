@@ -19,7 +19,7 @@ class HotelRoom(models.Model):
     hotel_id = fields.Many2one('hotel.hotel', string='Hotel', required=True, tracking=True)
     hotel_location = fields.Char(string='Hotel Location', related='hotel_id.address', store=True, readonly=True)
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
-    capacity = fields.Integer(string='Capacity', required=True, default=1, tracking=True)
+    capacity = fields.Integer(string='Capacity', tracking=True)
     tag_ids = fields.Many2many('room.tag', string='Features')
     price = fields.Float(string='Price per Night', required=True, tracking=True)
     status = fields.Selection(
@@ -38,20 +38,19 @@ class HotelRoom(models.Model):
             room_number = vals.get('room_number', _('NewRoom'))
             vals['reference'] = "{}-{}".format(hotel_ref, room_number)
         record = super().create(vals)
+        record._onchange_room_type()
         _logger.info('Created new hotel room with ID: %s and reference: %s', record.id, record.reference)
         return record
 
     @api.onchange('room_type')
     def _onchange_room_type(self):
         _logger.debug('Room type changed to: %s', self.room_type)
-        if self.room_type == 'single':
-            self.capacity = 1
-        elif self.room_type == 'double':
-            self.capacity = 2
-        elif self.room_type == 'suite':
-            self.capacity = 4
-        else:
-            self.capacity = 0
+        capacity_mapping = {
+            'single': 1,
+            'double': 2,
+            'suite': 4
+        }
+        self.capacity = capacity_mapping.get(self.room_type, 0)
         _logger.debug('Room capacity set to: %s', self.capacity)
 
     def action_available(self):

@@ -45,6 +45,9 @@
         "views/hotel_views.xml",
         "views/menu.xml",
     ],
+    'demo': [
+        'demo/demo.xml',
+    ],
     'installable': True,
     'application': True,
     'auto_install': False,
